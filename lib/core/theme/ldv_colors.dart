@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class LdvColors {
-  static const white = Colors.white;
-  static const black = Colors.black;
-  static const bitterSweet = Color(0xFFFF7474);
+  Color get white {
+    return Colors.white;
+  }
+
+  Color get black {
+    return Colors.black;
+  }
+
+  Color get bitterSweet {
+    return const Color(0xFFFF7474);
+  }
 }
