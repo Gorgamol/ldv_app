@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ldv_app/core/l10n/app_localizations.dart';
 import 'package:ldv_app/core/routing/ldv_app_router.dart';
 
 class LdvApp extends StatelessWidget {
@@ -11,6 +12,7 @@ class LdvApp extends StatelessWidget {
       title: 'LDV App',
       routerConfig: ldvAppRouter,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
