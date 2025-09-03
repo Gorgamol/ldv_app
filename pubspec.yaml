@@ -24,3 +24,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+  fonts:
+    - family: Salterio
+      fonts:
+      - asset: assets/fonts/Salterio-Shadow.ttf

@@ -54,12 +54,12 @@ class _SplashPageDesktopState extends State<SplashPageDesktop>
               style: context.ldvTextStyles.headlineBig,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.20,
+              width: MediaQuery.sizeOf(context).width * 0.15,
               child: Image.asset('assets/images/logo_ldv.png'),
             ),
             LdvProgressBar(
               value: _progressAnimation.value / 100,
-              width: MediaQuery.of(context).size.width * 0.20,
+              width: MediaQuery.sizeOf(context).width * 0.15,
             ),
           ],
         ),
