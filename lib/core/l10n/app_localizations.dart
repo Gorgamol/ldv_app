@@ -103,6 +103,30 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'LDV App'**
   String get appTitle;
+
+  /// No description provided for @clubBranchPark.
+  ///
+  /// In de, this message translates to:
+  /// **'Park'**
+  String get clubBranchPark;
+
+  /// No description provided for @clubBranchMill.
+  ///
+  /// In de, this message translates to:
+  /// **'Mühle'**
+  String get clubBranchMill;
+
+  /// No description provided for @clubBranchTheater.
+  ///
+  /// In de, this message translates to:
+  /// **'Theater'**
+  String get clubBranchTheater;
+
+  /// No description provided for @tasksList.
+  ///
+  /// In de, this message translates to:
+  /// **'Aufgabenliste'**
+  String get tasksList;
 }
 
 class _AppLocalizationsDelegate

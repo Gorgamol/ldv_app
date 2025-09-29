@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
+import 'package:ldv_app/features/club_branch/domain/models/club_branch.dart';
+import 'package:ldv_app/features/club_branch/providers.dart';
 import 'package:ldv_app/ui/widgets/ldv_progress_bar.dart';
 
-class SplashPageDesktop extends StatefulWidget {
+class SplashPageDesktop extends ConsumerStatefulWidget {
   const SplashPageDesktop({super.key});
 
   @override
-  State<SplashPageDesktop> createState() => _SplashPageDesktopState();
+  ConsumerState<SplashPageDesktop> createState() => _SplashPageDesktopState();
 }
 
-class _SplashPageDesktopState extends State<SplashPageDesktop>
+class _SplashPageDesktopState extends ConsumerState<SplashPageDesktop>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> _progressAnimation;
@@ -29,6 +33,11 @@ class _SplashPageDesktopState extends State<SplashPageDesktop>
 
     _progressAnimation.addListener(() {
       setState(() {});
+      ref.read(clubBranchProvider.notifier).setBranch(branch: ClubBranch.mill);
+
+      if (_progressAnimation.isCompleted) {
+        context.go('/tasks');
+      }
     });
 
     _animationController.forward();
