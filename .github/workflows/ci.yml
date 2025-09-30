@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup flutter
         uses: subosito/flutter-action@v2
@@ -32,7 +32,7 @@ jobs:
     needs: analyze
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup flutter
         uses: subosito/flutter-action@v2
@@ -70,7 +70,7 @@ jobs:
       needs: analyze
       steps:
         - name: Checkout code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
 
         - name: Setup flutter
           uses: subosito/flutter-action@v2
@@ -100,7 +100,7 @@ jobs:
       needs: [build_android, build_windows]
       steps:
         - name: Checkout code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
 
         - name: Get version from pubspec.yaml
           id: get_version
@@ -122,7 +122,7 @@ jobs:
             path: artifacts/windows
 
         - name: Upload artifacts to Release
-          uses: softprops/action-gh-release@v1
+          uses: softprops/action-gh-release@v2
           with:
             tag_name: v${{ steps.get_version.outputs.version }}+${{ github.run_number }}
             name: "Release v${{ steps.get_version.outputs.version }}+${{ github.run_number }}"
