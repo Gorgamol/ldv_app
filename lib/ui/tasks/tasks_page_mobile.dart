@@ -53,7 +53,10 @@ class TasksPageMobile extends ConsumerWidget {
               spacing: 8,
               alignment: WrapAlignment.start,
               children: [
-                Text('Status:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  'Status:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Container(
                   height: 26,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -62,7 +65,7 @@ class TasksPageMobile extends ConsumerWidget {
                     border: Border.all(width: 1),
                     borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
-                  child: Text('Alle'),
+                  child: const Text('Alle'),
                 ),
                 Container(
                   height: 26,
@@ -71,7 +74,7 @@ class TasksPageMobile extends ConsumerWidget {
                     border: Border.all(width: 1),
                     borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
-                  child: Text('Offen'),
+                  child: const Text('Offen'),
                 ),
                 Container(
                   height: 26,
@@ -80,7 +83,7 @@ class TasksPageMobile extends ConsumerWidget {
                     border: Border.all(width: 1),
                     borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
-                  child: Text('Geschlossen'),
+                  child: const Text('Geschlossen'),
                 ),
                 Container(
                   height: 26,
@@ -89,7 +92,7 @@ class TasksPageMobile extends ConsumerWidget {
                     border: Border.all(width: 1),
                     borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
-                  child: Text('Verworfen'),
+                  child: const Text('Verworfen'),
                 ),
               ],
             ),
