@@ -85,9 +85,8 @@ jobs:
 
         - name: Zip windows build folder
           run: |
-            cd build/windows/x64/Release
-            powershell Compress-Archive -Path * -DestinationPath ../../../../windows_build_v${{ steps.get_version.outputs.version }}+${{ github.run_number }}.zip
-            cd ../../../../
+            cd build/windows/x64/runner/Release
+            powershell Compress-Archive * ../../../../../windows_build.zip
 
         - name: Upload windows build artifacts
           uses: actions/upload-artifact@v4
