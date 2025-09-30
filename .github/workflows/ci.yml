@@ -1,0 +1,76 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  FLUTTER_VERSION: '3.35.2'
+
+jobs:
+  analyze:
+    name: Analyze Flutter project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+  build:
+    name: Build and Sign Android App
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode Keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
+
+      - name: Get version from pubspec.yaml
+        id: get_version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //g' | cut -d+ -f1)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build APK with version
+        run: flutter build apk --release --build-number=${{ github.run_number }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}+${{ github.run_number }}
+          name: "Release v${{ steps.get_version.outputs.version }}+${{ github.run_number }}"
+          draft: false
+          prerelease: false
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
