@@ -13,9 +13,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final branch = ref.watch(clubBranchProvider);
 
-    final currentRoute = GoRouter.of(
-      context,
-    ).routerDelegate.currentConfiguration.uri.toString();
+    final currentRoute = GoRouter.of(context).state.path ?? '';
 
     final bottomBarItems = switch (branch) {
       ClubBranch.park => _getParkItems(
@@ -52,7 +50,9 @@ class BottomNavigationBarMobile extends ConsumerWidget {
                   onTap: item.onTap,
                   borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(
+                      context.ldvUiConstants.mobileSpacing,
+                    ),
                     child: Column(
                       children: [
                         Container(
@@ -82,7 +82,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
               ],
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: context.ldvUiConstants.mobileSpacing),
         ],
       ),
     );
@@ -98,7 +98,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
         icon: const Icon(Icons.list_alt_outlined),
         active: currentRoute == '/tasks',
         onTap: () {
-          context.go('/tasks');
+          context.replace('/tasks');
         },
         title: context.translate.tasks,
       ),
@@ -106,7 +106,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
         icon: const Icon(Icons.book_outlined),
         active: currentRoute == '/maintenance',
         onTap: () {
-          context.go('/maintenance');
+          context.replace('/maintenance');
         },
         title: context.translate.maintenance,
       ),
@@ -114,7 +114,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
         icon: const Icon(Icons.festival_outlined),
         active: currentRoute == '/weddings',
         onTap: () {
-          context.go('/weddings');
+          context.replace('/weddings');
         },
         title: context.translate.weddings,
       ),
@@ -130,7 +130,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
         icon: const Icon(Icons.list_alt_outlined),
         active: currentRoute == '/tasks',
         onTap: () {
-          context.go('/tasks');
+          context.replace('/tasks');
         },
         title: context.translate.tasks,
       ),
@@ -138,7 +138,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
         icon: const Icon(Icons.book_outlined),
         active: currentRoute == '/maintenance',
         onTap: () {
-          context.go('/maintenance');
+          context.replace('/maintenance');
         },
         title: context.translate.maintenance,
       ),
@@ -154,7 +154,7 @@ class BottomNavigationBarMobile extends ConsumerWidget {
         icon: const Icon(Icons.list_alt_outlined),
         active: currentRoute == '/tasks',
         onTap: () {
-          context.go('/tasks');
+          context.replace('/tasks');
         },
         title: context.translate.tasks,
       ),

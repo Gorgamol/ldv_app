@@ -21,6 +21,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   riverpod_lint: ^2.6.5
   custom_lint: ^0.7.6
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
@@ -31,3 +32,18 @@ flutter:
     - family: Salterio
       fonts:
       - asset: assets/fonts/Salterio-Shadow.ttf
+
+flutter_launcher_icons:
+  image_path: "assets/images/app_icon.png"
+  android: true
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/app_icon.png"
+  adaptive_icon_foreground_inset: 25
+  windows:
+    generate: true
+    image_path: "assets/images/app_icon.png"
+  ios: false
+  web:
+    generate: false
+  macos:
+    generate: false

@@ -25,17 +25,17 @@ class LdvScaffoldMobile extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: context.ldvColors.white,
+      appBar: _AppBar(title: title, onBack: onBack),
       body: Column(
         children: [
-          ColoredBox(
-            color: Colors.white,
-            child: _Header(title: title, onBack: onBack),
-          ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.ldvUiConstants.mobileSpacing,
+                  vertical: context.ldvUiConstants.mobileSpacingBig,
+                ),
                 child: content,
               ),
             ),
@@ -48,21 +48,25 @@ class LdvScaffoldMobile extends StatelessWidget {
   }
 }
 
-class _Header extends ConsumerWidget {
-  const _Header({required this.title, required this.onBack});
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({required this.title, required this.onBack});
 
   final String title;
   final VoidCallback onBack;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final branch = ref.watch(clubBranchProvider);
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: context.ldvColors.white,
+      scrolledUnderElevation: 0,
+      automaticallyImplyLeading: false,
+      title: Consumer(
+        builder: (context, ref, child) {
+          final branch = ref.watch(clubBranchProvider);
+          return Row(
             children: [
               Material(
                 borderRadius: context.ldvUiConstants.roundedBorderRadius,
@@ -105,15 +109,17 @@ class _Header extends ConsumerWidget {
                 _ => const SizedBox.shrink(),
               },
             ],
-          ),
-        ),
-        Divider(
-          thickness: 1.5,
-          height: 1.5,
+          );
+        },
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(2),
+        child: Container(
           color: context.ldvColors.black,
-          radius: context.ldvUiConstants.roundedBorderRadius,
+          width: double.infinity,
+          height: 1.5,
         ),
-      ],
+      ),
     );
   }
 }

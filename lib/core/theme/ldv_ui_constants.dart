@@ -38,6 +38,10 @@ class LdvUiConstants {
     return BorderRadius.circular(12);
   }
 
+  double get mobileSpacingBig => 24;
+  double get mobileSpacing => 12;
+  double get mobileSpacingSmall => 6;
+
   LdvColors get _ldvColors {
     return LdvColors();
   }

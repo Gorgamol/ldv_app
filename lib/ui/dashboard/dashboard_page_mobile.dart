@@ -27,11 +27,11 @@ class _DashboardView extends ConsumerWidget {
       body: _BlurredBackground(
         imagePath: 'assets/images/background_mill.jpg',
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 16,
+            spacing: context.ldvUiConstants.mobileSpacing,
             children: [
               Center(
                 child: _DashboardButton(
@@ -39,7 +39,7 @@ class _DashboardView extends ConsumerWidget {
                   imagePath: 'assets/images/logo_park.png',
                   onTap: () {
                     clubBranchNotifier.setBranch(branch: ClubBranch.park);
-                    context.go(context.ldvRoutes.tasks);
+                    context.push(context.ldvRoutes.tasks);
                   },
                 ),
               ),
@@ -49,7 +49,7 @@ class _DashboardView extends ConsumerWidget {
                   imagePath: 'assets/images/logo_mill.png',
                   onTap: () {
                     clubBranchNotifier.setBranch(branch: ClubBranch.mill);
-                    context.go(context.ldvRoutes.tasks);
+                    context.push(context.ldvRoutes.tasks);
                   },
                 ),
               ),
@@ -59,7 +59,7 @@ class _DashboardView extends ConsumerWidget {
                   imagePath: 'assets/images/logo_theater.png',
                   onTap: () {
                     clubBranchNotifier.setBranch(branch: ClubBranch.theater);
-                    context.go(context.ldvRoutes.tasks);
+                    context.push(context.ldvRoutes.tasks);
                   },
                 ),
               ),
@@ -95,9 +95,9 @@ class _DashboardButton extends StatelessWidget {
         width: double.infinity,
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
           child: Column(
-            spacing: 16,
+            spacing: context.ldvUiConstants.mobileSpacing,
             children: [
               Expanded(child: Image.asset(imagePath)),
               Text(

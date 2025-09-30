@@ -20,7 +20,9 @@ final ldvAppRouter = GoRouter(
     GoRoute(
       path: '/dashboard',
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: DashboardPage());
+        return const NoTransitionPage(
+          child: PopScope(canPop: false, child: DashboardPage()),
+        );
       },
     ),
     GoRoute(

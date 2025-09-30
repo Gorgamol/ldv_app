@@ -46,11 +46,11 @@ class TasksPageMobile extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
           Align(
             alignment: Alignment.centerLeft,
             child: Wrap(
-              spacing: 8,
+              spacing: context.ldvUiConstants.mobileSpacingSmall,
               alignment: WrapAlignment.start,
               children: [
                 const Text(
@@ -83,7 +83,7 @@ class TasksPageMobile extends ConsumerWidget {
                     border: Border.all(width: 1),
                     borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
-                  child: const Text('Geschlossen'),
+                  child: const Text('Erledigt'),
                 ),
                 Container(
                   height: 26,
@@ -97,44 +97,60 @@ class TasksPageMobile extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 32),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
+          SizedBox(height: context.ldvUiConstants.mobileSpacing),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              spacing: context.ldvUiConstants.mobileSpacingSmall,
+              alignment: WrapAlignment.start,
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    'Priorität',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                const Text(
+                  'Priorität:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    'Aufgabe',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                Container(
+                  height: 26,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: context.ldvColors.bitterSweet,
+                    border: Border.all(width: 1),
+                    borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
+                  child: const Text('Alle'),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    'Erstellt',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                Container(
+                  height: 26,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1),
+                    borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
+                  child: const Text('Hoch'),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    'Status',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                Container(
+                  height: 26,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1),
+                    borderRadius: context.ldvUiConstants.roundedBorderRadius,
                   ),
+                  child: const Text('Normal'),
+                ),
+                Container(
+                  height: 26,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1),
+                    borderRadius: context.ldvUiConstants.roundedBorderRadius,
+                  ),
+                  child: const Text('Niedrig'),
                 ),
               ],
             ),
           ),
+          SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
           Column(
-            spacing: 8,
+            spacing: context.ldvUiConstants.mobileSpacingSmall,
             children: [
               for (final task in _mockItems) ...[
                 LdvRoundedButton(
@@ -148,7 +164,9 @@ class TasksPageMobile extends ConsumerWidget {
                         width: double.infinity,
                         child: Row(
                           children: [
-                            const SizedBox(width: 16),
+                            SizedBox(
+                              width: context.ldvUiConstants.mobileSpacing,
+                            ),
                             Expanded(
                               flex: 2,
                               child: Text(
@@ -197,7 +215,9 @@ class TasksPageMobile extends ConsumerWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(
+                              width: context.ldvUiConstants.mobileSpacing,
+                            ),
                           ],
                         ),
                       ),
@@ -223,7 +243,6 @@ class TasksPageMobile extends ConsumerWidget {
       },
       floatingActionButton: LdvCircleButton(
         onTap: () {},
-        // TODO: Sortieren nach! Filter sind einfach rounded boxen im content! Alternativ sortieren nach bei überschriften
         child: const Icon(Icons.add),
       ),
     );
