@@ -58,7 +58,7 @@ jobs:
         run: flutter build apk --release --build-number=${{ github.run_number }}
 
       - name: Upload android artifacts
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: android_build
           path: build/app/outputs/flutter-apk/app-release.apk
@@ -90,7 +90,7 @@ jobs:
             cd ../../../../
 
         - name: Upload windows build artifacts
-        - uses: actions/upload-artifact@v4
+          uses: actions/upload-artifact@v4
           with:
             name: windows_build
             path: windows_build.zip
@@ -111,13 +111,13 @@ jobs:
             echo "version=$VERSION" >> $GITHUB_OUTPUT
 
         - name: Download android build artifacts
-        - uses: actions/download-artifact@v4
+          uses: actions/download-artifact@v4
           with:
             name: android_build
             path: artifacts/android
 
         - name: Download windows build artifacts    
-        - uses: actions/download-artifact@v4
+          uses: actions/download-artifact@v4
           with:
             name: windows_build
             path: artifacts/windows
