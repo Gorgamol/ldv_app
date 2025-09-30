@@ -3,5 +3,7 @@
     "clubBranchPark": "Park",
     "clubBranchMill": "Mühle",
     "clubBranchTheater": "Theater",
-    "tasksList": "Aufgabenliste"
+    "tasks": "Aufgaben",
+     "maintenance": "Wartung",
+    "weddings": "Hochzeiten"
 }

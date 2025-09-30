@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/ui/widgets/ldv_progress_bar.dart';
 
@@ -29,6 +30,10 @@ class _SplashPageMobileState extends State<SplashPageMobile>
 
     _progressAnimation.addListener(() {
       setState(() {});
+
+      if (_progressAnimation.isCompleted) {
+        context.go(context.ldvRoutes.dashboard);
+      }
     });
 
     _animationController.forward();

@@ -63,7 +63,7 @@ class _SideBar extends ConsumerWidget {
         context: context,
         currentRoute: currentRoute,
       ),
-      _ => [],
+      _ => <SideBarItem>[],
     };
 
     return Column(

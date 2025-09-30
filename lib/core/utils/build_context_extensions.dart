@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ldv_app/core/l10n/app_localizations.dart';
+import 'package:ldv_app/core/routing/ldv_routes.dart';
 import 'package:ldv_app/core/theme/ldv_colors.dart';
 import 'package:ldv_app/core/theme/ldv_text_styles.dart';
 import 'package:ldv_app/core/theme/ldv_theme.dart';
@@ -11,4 +12,5 @@ extension BuildContextExtension on BuildContext {
   LdvTextStyles get ldvTextStyles => LdvTextStyles();
   LdvUiConstants get ldvUiConstants => LdvUiConstants();
   LdvTheme get ldvTheme => LdvTheme();
+  LdvRoutes get ldvRoutes => LdvRoutes();
 }

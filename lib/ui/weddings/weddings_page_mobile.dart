@@ -7,15 +7,15 @@ import 'package:ldv_app/features/club_branch/providers.dart';
 import 'package:ldv_app/ui/widgets/bottom_navigation_bar_mobile.dart';
 import 'package:ldv_app/ui/widgets/ldv_scaffold_mobile.dart';
 
-class MaintenancePageMobile extends ConsumerWidget {
-  const MaintenancePageMobile({super.key});
+class WeddingsPageMobile extends ConsumerWidget {
+  const WeddingsPageMobile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final branch = ref.watch(clubBranchProvider);
 
     return LdvScaffoldMobile(
-      title: context.translate.maintenance,
+      title: context.translate.weddings,
       onBack: () => context.go(context.ldvRoutes.dashboard),
       content: const Center(
         child: Text('An dieser View wird noch gearbeitet! :)'),

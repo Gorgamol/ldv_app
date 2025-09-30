@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ldv_app/core/theme/ldv_colors.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
-import 'package:ldv_app/features/shared/models/side_bar_item.dart';
 import 'package:ldv_app/ui/widgets/ldv_circle_button.dart';
 import 'package:ldv_app/ui/widgets/ldv_scaffold_desktop.dart';
 
@@ -12,7 +9,7 @@ class TasksPageDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LdvScaffoldDesktop(
-      title: context.translate.tasksList,
+      title: context.translate.tasks,
       actions: Row(
         spacing: 16,
         children: [

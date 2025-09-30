@@ -6,8 +6,8 @@ class LdvRoundedButton extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.child,
-    this.height = 40,
-    this.width = 40,
+    this.height = double.infinity,
+    this.width = double.infinity,
   });
 
   final VoidCallback onTap;

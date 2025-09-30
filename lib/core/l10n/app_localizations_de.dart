@@ -21,5 +21,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get clubBranchTheater => 'Theater';
 
   @override
-  String get tasksList => 'Aufgabenliste';
+  String get tasks => 'Aufgaben';
+
+  @override
+  String get maintenance => 'Wartung';
+
+  @override
+  String get weddings => 'Hochzeiten';
 }

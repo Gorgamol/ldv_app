@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_de.dart';
-import 'app_localizations_en.dart';
 
 // ignore_for_file: type=lint
 
@@ -93,10 +92,7 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('de'),
-    Locale('en'),
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('de')];
 
   /// No description provided for @appTitle.
   ///
@@ -122,11 +118,23 @@ abstract class AppLocalizations {
   /// **'Theater'**
   String get clubBranchTheater;
 
-  /// No description provided for @tasksList.
+  /// No description provided for @tasks.
   ///
   /// In de, this message translates to:
-  /// **'Aufgabenliste'**
-  String get tasksList;
+  /// **'Aufgaben'**
+  String get tasks;
+
+  /// No description provided for @maintenance.
+  ///
+  /// In de, this message translates to:
+  /// **'Wartung'**
+  String get maintenance;
+
+  /// No description provided for @weddings.
+  ///
+  /// In de, this message translates to:
+  /// **'Hochzeiten'**
+  String get weddings;
 }
 
 class _AppLocalizationsDelegate
@@ -140,7 +148,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['de', 'en'].contains(locale.languageCode);
+      <String>['de'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -151,8 +159,6 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'de':
       return AppLocalizationsDe();
-    case 'en':
-      return AppLocalizationsEn();
   }
 
   throw FlutterError(
