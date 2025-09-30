@@ -9,13 +9,13 @@ env:
 
 jobs:
   analyze:
-    name: Analyze Flutter project
+    name: Analyze code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Setup flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -26,15 +26,15 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
-  build:
-    name: Build and Sign Android App
+  build_android:
+    name: Build android app
     runs-on: ubuntu-latest
     needs: analyze
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Setup flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Decode Keystore
+      - name: Decode keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
       - name: Create key.properties
@@ -54,23 +54,83 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Get version from pubspec.yaml
-        id: get_version
-        run: |
-          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //g' | cut -d+ -f1)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Build APK with version
+      - name: Build android APK
         run: flutter build apk --release --build-number=${{ github.run_number }}
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload android artifacts
+      - uses: actions/upload-artifact@v4
         with:
-          tag_name: v${{ steps.get_version.outputs.version }}+${{ github.run_number }}
-          name: "Release v${{ steps.get_version.outputs.version }}+${{ github.run_number }}"
-          draft: false
-          prerelease: false
-          files: |
-            build/app/outputs/flutter-apk/app-release.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: android_build
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+
+  build_windows:
+      name: Build windows app
+      runs-on: windows-latest
+      needs: analyze
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Setup flutter
+          uses: subosito/flutter-action@v2
+          with:
+            flutter-version: ${{ env.FLUTTER_VERSION }}
+
+        - name: Install dependencies
+          run: flutter pub get
+
+        - name: Build windows EXE
+          run: flutter build windows --release --build-number=${{ github.run_number }}
+
+        - name: Zip windows build folder
+          run: |
+            cd build/windows/x64/Release
+            powershell Compress-Archive -Path * -DestinationPath ../../../../windows_build_v${{ steps.get_version.outputs.version }}+${{ github.run_number }}.zip
+            cd ../../../../
+
+        - name: Upload windows build artifacts
+        - uses: actions/upload-artifact@v4
+          with:
+            name: windows_build
+            path: windows_build.zip
+
+  release:
+      name: Create release
+      runs-on: ubuntu-latest
+      needs: [build_android, build_windows]
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Get version from pubspec.yaml
+          id: get_version
+          shell: bash
+          run: |
+            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //g' | cut -d+ -f1)
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+        - name: Download android build artifacts
+        - uses: actions/download-artifact@v4
+          with:
+            name: android_build
+            path: artifacts/android
+
+        - name: Download windows build artifacts    
+        - uses: actions/download-artifact@v4
+          with:
+            name: windows_build
+            path: artifacts/windows
+
+        - name: Upload artifacts to Release
+          uses: softprops/action-gh-release@v1
+          with:
+            tag_name: v${{ steps.get_version.outputs.version }}+${{ github.run_number }}
+            name: "Release v${{ steps.get_version.outputs.version }}+${{ github.run_number }}"
+            draft: false
+            prerelease: false
+            files: |
+              artifacts/android/app-release.apk
+              artifacts/windows/windows_build.zip
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
