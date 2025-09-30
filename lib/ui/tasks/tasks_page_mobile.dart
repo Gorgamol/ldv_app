@@ -168,7 +168,7 @@ class TasksPageMobile extends ConsumerWidget {
                               width: context.ldvUiConstants.mobileSpacing,
                             ),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Text(
                                 task['priority'],
                                 overflow: TextOverflow.ellipsis,
@@ -192,20 +192,20 @@ class TasksPageMobile extends ConsumerWidget {
                               ),
                             ),
                             Expanded(
-                              flex: 2,
-                              child: Text(
-                                task['created'],
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: task['status'] == 'Verworfen'
-                                      ? context.ldvColors.dustyGray
-                                      : context.ldvColors.black,
-                                ),
-                              ),
-                            ),
-                            Expanded(
                               flex: 1,
-                              child: Text(
+                              child: Icon(
+                                switch (task['status']) {
+                                  'Verworfen' => Icons.cancel_outlined,
+                                  _ => Icons.check_circle_outline,
+                                },
+                                color: switch (task['status']) {
+                                  'Verworfen' => context.ldvColors.dustyGray,
+                                  'Offen' => context.ldvColors.dustyGray,
+                                  _ => Colors.green,
+                                },
+                              ),
+
+                              /*Text(
                                 task['status'],
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -213,7 +213,7 @@ class TasksPageMobile extends ConsumerWidget {
                                       ? context.ldvColors.dustyGray
                                       : context.ldvColors.black,
                                 ),
-                              ),
+                              ),*/
                             ),
                             SizedBox(
                               width: context.ldvUiConstants.mobileSpacing,
@@ -260,7 +260,7 @@ class TasksPageMobile extends ConsumerWidget {
         'priority': 'Normal',
         'task': 'Parkplatz fegen',
         'created': '01.08.2025',
-        'status': 'Abgeschlossen',
+        'status': 'Erledigt',
       },
       {
         'priority': 'Hoch',
@@ -290,7 +290,7 @@ class TasksPageMobile extends ConsumerWidget {
         'priority': 'Hoch',
         'task': 'Noch eine abgeschlossene Aufgabe',
         'created': '01.04.2025',
-        'status': 'Abgeschlossen',
+        'status': 'Erledigt',
       },
       {
         'priority': 'Normal',
@@ -308,7 +308,7 @@ class TasksPageMobile extends ConsumerWidget {
         'priority': 'Hoch',
         'task': 'Noch eine abgeschlossene Aufgabe',
         'created': '01.04.2025',
-        'status': 'Abgeschlossen',
+        'status': 'Erledigt',
       },
       {
         'priority': 'Normal',
@@ -326,7 +326,7 @@ class TasksPageMobile extends ConsumerWidget {
         'priority': 'Hoch',
         'task': 'Noch eine abgeschlossene Aufgabe am Ende',
         'created': '01.04.2025',
-        'status': 'Abgeschlossen',
+        'status': 'Erledigt',
       },
     ];
   }
