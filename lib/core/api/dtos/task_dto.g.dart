@@ -7,7 +7,7 @@ part of 'task_dto.dart';
 // **************************************************************************
 
 _TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => _TaskDto(
-  id: json['id'] as String,
+  id: (json['id'] as num).toInt(),
   title: json['title'] as String,
   description: json['description'] as String,
   createdAt: DateTime.parse(json['created_at'] as String),

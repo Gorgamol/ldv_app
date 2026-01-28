@@ -51,6 +51,9 @@ class _TaskView extends StatelessWidget {
             height: 40,
             width: double.infinity,
             child: SearchBar(
+              onChanged: (value) {
+                context.read<TaskCubit>().setSearch(value: value);
+              },
               leading: const Icon(Icons.search),
               hintText: 'Aufgaben durchsuchen...',
               backgroundColor: WidgetStateColor.resolveWith(
@@ -202,7 +205,7 @@ class _TaskView extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  task.priority.toString(),
+                                  task.priority.toStringTranslated(),
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: task.status == .discarded

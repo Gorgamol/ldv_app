@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskDto {
 
-@JsonKey(name: 'id') String get id;@JsonKey(name: 'title') String get title;@JsonKey(name: 'description') String get description;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(name: 'status') TaskStatus get status;@JsonKey(name: 'priority') TaskPriority get priority;@JsonKey(name: 'author') String get author;@JsonKey(name: 'branch') String get branch;
+@JsonKey(name: 'id') int get id;@JsonKey(name: 'title') String get title;@JsonKey(name: 'description') String get description;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(name: 'status') TaskStatus get status;@JsonKey(name: 'priority') TaskPriority get priority;@JsonKey(name: 'author') String get author;@JsonKey(name: 'branch') String get branch;
 /// Create a copy of TaskDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TaskDtoCopyWith<$Res>  {
   factory $TaskDtoCopyWith(TaskDto value, $Res Function(TaskDto) _then) = _$TaskDtoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') String id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch
+@JsonKey(name: 'id') int id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch
 });
 
 
@@ -68,7 +68,7 @@ class _$TaskDtoCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? priority = null,Object? author = null,Object? branch = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskDto() when $default != null:
 return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch);case _:
@@ -182,7 +182,7 @@ return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.upd
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)  $default,) {final _that = this;
 switch (_that) {
 case _TaskDto():
 return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch);case _:
@@ -202,7 +202,7 @@ return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.upd
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  String id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskDto() when $default != null:
 return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch);case _:
@@ -220,7 +220,7 @@ class _TaskDto implements TaskDto {
   const _TaskDto({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'title') required this.title, @JsonKey(name: 'description') required this.description, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(name: 'status') required this.status, @JsonKey(name: 'priority') required this.priority, @JsonKey(name: 'author') required this.author, @JsonKey(name: 'branch') required this.branch});
   factory _TaskDto.fromJson(Map<String, dynamic> json) => _$TaskDtoFromJson(json);
 
-@override@JsonKey(name: 'id') final  String id;
+@override@JsonKey(name: 'id') final  int id;
 @override@JsonKey(name: 'title') final  String title;
 @override@JsonKey(name: 'description') final  String description;
 @override@JsonKey(name: 'created_at') final  DateTime createdAt;
@@ -263,7 +263,7 @@ abstract mixin class _$TaskDtoCopyWith<$Res> implements $TaskDtoCopyWith<$Res> {
   factory _$TaskDtoCopyWith(_TaskDto value, $Res Function(_TaskDto) _then) = __$TaskDtoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') String id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch
+@JsonKey(name: 'id') int id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch
 });
 
 
@@ -283,7 +283,7 @@ class __$TaskDtoCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? priority = null,Object? author = null,Object? branch = null,}) {
   return _then(_TaskDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable

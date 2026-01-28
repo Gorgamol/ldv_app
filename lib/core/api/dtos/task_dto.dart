@@ -8,7 +8,7 @@ part 'task_dto.g.dart';
 @freezed
 abstract class TaskDto with _$TaskDto {
   const factory TaskDto({
-    @JsonKey(name: 'id') required String id,
+    @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'title') required String title,
     @JsonKey(name: 'description') required String description,
     @JsonKey(name: 'created_at') required DateTime createdAt,

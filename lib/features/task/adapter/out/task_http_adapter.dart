@@ -41,7 +41,7 @@ class TaskHttpAdapter implements TaskRepository {
 extension _TaskDtoExtension on TaskDto {
   Task toDomain() {
     return Task(
-      id: id,
+      id: id.toString(),
       title: title,
       description: description,
       createdAt: createdAt,

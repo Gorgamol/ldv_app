@@ -14,6 +14,15 @@ enum TaskPriority {
     };
   }
 
+  String toStringTranslated() {
+    return switch (this) {
+      low => 'Niedrig',
+      normal => 'Normal',
+      high => 'Hoch',
+      _ => 'Unbekannt',
+    };
+  }
+
   static TaskPriority fromString({required String value}) {
     return switch (value) {
       'low' => low,
