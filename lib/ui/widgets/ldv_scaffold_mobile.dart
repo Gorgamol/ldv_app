@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
-import 'package:ldv_app/features/club_branch/domain/models/club_branch.dart';
-import 'package:ldv_app/features/club_branch/providers.dart';
+import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
+import 'package:ldv_app/features/branch/domain/models/branch.dart';
 
 class LdvScaffoldMobile extends StatelessWidget {
   const LdvScaffoldMobile({
@@ -63,9 +63,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: context.ldvColors.white,
       scrolledUnderElevation: 0,
       automaticallyImplyLeading: false,
-      title: Consumer(
-        builder: (context, ref, child) {
-          final branch = ref.watch(clubBranchProvider);
+      title: Builder(
+        builder: (context) {
+          final branch = context.select((BranchCubit cubit) => cubit.state);
           return Row(
             children: [
               Material(
@@ -80,11 +80,10 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         const Icon(Icons.chevron_left),
                         Text(
-                          '${branch.toString()} - $title',
+                          '${branch?.toL10nString()} - $title',
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 30,
-                            fontFamily: 'Salterio',
+                            fontSize: 20,
                           ),
                         ),
                       ],
@@ -94,15 +93,15 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               const Spacer(),
               switch (branch) {
-                ClubBranch.park => Image.asset(
+                Branch.park => Image.asset(
                   'assets/images/logo_park.png',
                   height: 42,
                 ),
-                ClubBranch.mill => Image.asset(
+                Branch.mill => Image.asset(
                   'assets/images/logo_mill.png',
                   height: 42,
                 ),
-                ClubBranch.theater => Image.asset(
+                Branch.theater => Image.asset(
                   'assets/images/logo_theater.png',
                   height: 42,
                 ),

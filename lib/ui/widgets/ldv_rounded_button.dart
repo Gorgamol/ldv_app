@@ -8,19 +8,23 @@ class LdvRoundedButton extends StatelessWidget {
     required this.child,
     this.height = double.infinity,
     this.width = double.infinity,
+    this.color = Colors.white,
   });
 
   final VoidCallback onTap;
   final Widget child;
   final double height;
   final double width;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Ink(
       height: height,
       width: width,
-      decoration: context.ldvUiConstants.boxDecorationRounded.copyWith(),
+      decoration: context.ldvUiConstants.boxDecorationRounded().copyWith(
+        color: color,
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: context.ldvUiConstants.roundedBorderRadius,

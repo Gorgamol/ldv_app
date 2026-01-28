@@ -12,13 +12,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get appTitle => 'LDV App';
 
   @override
-  String get clubBranchPark => 'Park';
-
-  @override
-  String get clubBranchMill => 'Mühle';
-
-  @override
-  String get clubBranchTheater => 'Theater';
+  String get unknown => 'Unbekannt';
 
   @override
   String get tasks => 'Aufgaben';
@@ -28,4 +22,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get weddings => 'Hochzeiten';
+
+  @override
+  String get park => 'Park';
+
+  @override
+  String get mill => 'Mühle';
+
+  @override
+  String get theater => 'Theater';
+
+  @override
+  String get error =>
+      'Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.';
 }

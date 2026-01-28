@@ -11,6 +11,10 @@ class LdvRoutes {
     return '/tasks';
   }
 
+  String get createTask {
+    return '/tasks/create';
+  }
+
   String get maintenance {
     return '/maintenance';
   }

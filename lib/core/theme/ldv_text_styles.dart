@@ -5,8 +5,7 @@ class LdvTextStyles {
     return const TextStyle(
       fontWeight: FontWeight.w500,
       // TODO Textgröße: Mobile 50 gut. Desktop 62 gut.??
-      fontSize: 50,
-      fontFamily: 'Salterio',
+      fontSize: 32,
     );
   }
 }

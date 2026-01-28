@@ -88,7 +88,8 @@ class TasksPageDesktop extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               child: Container(
-                decoration: context.ldvUiConstants.boxDecorationRounded
+                decoration: context.ldvUiConstants
+                    .boxDecorationRounded()
                     .copyWith(boxShadow: []),
                 clipBehavior: Clip.hardEdge,
                 child: ListView.separated(

@@ -1,11 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
-import 'package:ldv_app/features/club_branch/domain/models/club_branch.dart';
-import 'package:ldv_app/features/club_branch/providers.dart';
+import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
 import 'package:ldv_app/ui/widgets/ldv_rounded_button.dart';
 
 class DashboardPageMobile extends StatelessWidget {
@@ -17,12 +15,13 @@ class DashboardPageMobile extends StatelessWidget {
   }
 }
 
-class _DashboardView extends ConsumerWidget {
+class _DashboardView extends StatelessWidget {
   const _DashboardView();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final clubBranchNotifier = ref.read(clubBranchProvider.notifier);
+  Widget build(BuildContext context) {
+    final branchCubit = context.read<BranchCubit>();
+
     return Scaffold(
       body: _BlurredBackground(
         imagePath: 'assets/images/background_mill.jpg',
@@ -35,30 +34,27 @@ class _DashboardView extends ConsumerWidget {
             children: [
               Center(
                 child: _DashboardButton(
-                  title: context.translate.clubBranchPark,
                   imagePath: 'assets/images/logo_park.png',
                   onTap: () {
-                    clubBranchNotifier.setBranch(branch: ClubBranch.park);
+                    branchCubit.setBranch(branch: .park);
                     context.push(context.ldvRoutes.tasks);
                   },
                 ),
               ),
               Center(
                 child: _DashboardButton(
-                  title: context.translate.clubBranchMill,
                   imagePath: 'assets/images/logo_mill.png',
                   onTap: () {
-                    clubBranchNotifier.setBranch(branch: ClubBranch.mill);
+                    branchCubit.setBranch(branch: .mill);
                     context.push(context.ldvRoutes.tasks);
                   },
                 ),
               ),
               Center(
                 child: _DashboardButton(
-                  title: context.translate.clubBranchTheater,
                   imagePath: 'assets/images/logo_theater.png',
                   onTap: () {
-                    clubBranchNotifier.setBranch(branch: ClubBranch.theater);
+                    branchCubit.setBranch(branch: .theater);
                     context.push(context.ldvRoutes.tasks);
                   },
                 ),
@@ -72,13 +68,8 @@ class _DashboardView extends ConsumerWidget {
 }
 
 class _DashboardButton extends StatelessWidget {
-  const _DashboardButton({
-    required this.title,
-    required this.imagePath,
-    required this.onTap,
-  });
+  const _DashboardButton({required this.imagePath, required this.onTap});
 
-  final String title;
   final String imagePath;
   final VoidCallback onTap;
 
@@ -96,20 +87,7 @@ class _DashboardButton extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
-          child: Column(
-            spacing: context.ldvUiConstants.mobileSpacing,
-            children: [
-              Expanded(child: Image.asset(imagePath)),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                  fontFamily: 'Salterio',
-                ),
-              ),
-            ],
-          ),
+          child: Image.asset(imagePath),
         ),
       ),
     );

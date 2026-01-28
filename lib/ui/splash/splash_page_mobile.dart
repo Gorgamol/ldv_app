@@ -54,10 +54,6 @@ class _SplashPageMobileState extends State<SplashPageMobile>
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 50,
           children: [
-            Text(
-              context.translate.appTitle,
-              style: context.ldvTextStyles.headlineBig,
-            ),
             SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.5,
               child: Image.asset('assets/images/logo_ldv.png'),

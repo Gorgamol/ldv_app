@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
-import 'package:ldv_app/features/club_branch/domain/models/club_branch.dart';
-import 'package:ldv_app/features/club_branch/providers.dart';
+import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
+import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/shared/models/side_bar_item.dart';
 
-class BottomNavigationBarMobile extends ConsumerWidget {
+class BottomNavigationBarMobile extends StatelessWidget {
   const BottomNavigationBarMobile({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final branch = ref.watch(clubBranchProvider);
-
+  Widget build(BuildContext context) {
+    final branch = context.select((BranchCubit cubit) => cubit.state);
     final currentRoute = GoRouter.of(context).state.path ?? '';
 
     final bottomBarItems = switch (branch) {
-      ClubBranch.park => _getParkItems(
+      Branch.park => _getParkItems(
         context: context,
         currentRoute: currentRoute,
       ),
-      ClubBranch.mill => _getMillItems(
+      Branch.mill => _getMillItems(
         context: context,
         currentRoute: currentRoute,
       ),
-      ClubBranch.theater => _getTheaterItems(
+      Branch.theater => _getTheaterItems(
         context: context,
         currentRoute: currentRoute,
       ),

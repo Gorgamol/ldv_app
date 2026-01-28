@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
-import 'package:ldv_app/features/club_branch/domain/models/club_branch.dart';
-import 'package:ldv_app/features/club_branch/providers.dart';
+import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
+import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/shared/models/side_bar_item.dart';
 import 'package:ldv_app/ui/widgets/ldv_rounded_button.dart';
 
@@ -39,27 +39,27 @@ class LdvScaffoldDesktop extends StatelessWidget {
   }
 }
 
-class _SideBar extends ConsumerWidget {
+class _SideBar extends StatelessWidget {
   const _SideBar();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final branch = ref.watch(clubBranchProvider);
+  Widget build(BuildContext context) {
+    final branch = context.select((BranchCubit cubit) => cubit.state);
 
     final currentRoute = GoRouter.of(
       context,
     ).routerDelegate.currentConfiguration.uri.toString();
 
     final sideBarItems = switch (branch) {
-      ClubBranch.park => _getParkItems(
+      Branch.park => _getParkItems(
         context: context,
         currentRoute: currentRoute,
       ),
-      ClubBranch.mill => _getMillItems(
+      Branch.mill => _getMillItems(
         context: context,
         currentRoute: currentRoute,
       ),
-      ClubBranch.theater => _getTheaterItems(
+      Branch.theater => _getTheaterItems(
         context: context,
         currentRoute: currentRoute,
       ),
@@ -72,15 +72,15 @@ class _SideBar extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16),
           child: switch (branch) {
-            ClubBranch.park => Image.asset(
+            Branch.park => Image.asset(
               'assets/images/logo_park.png',
               height: 60,
             ),
-            ClubBranch.mill => Image.asset(
+            Branch.mill => Image.asset(
               'assets/images/logo_mill.png',
               height: 60,
             ),
-            ClubBranch.theater => Image.asset(
+            Branch.theater => Image.asset(
               'assets/images/logo_theater.png',
               height: 60,
             ),
@@ -197,7 +197,7 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: context.ldvUiConstants.boxDecorationRounded,
+      decoration: context.ldvUiConstants.boxDecorationRounded(),
       child: Column(
         children: [
           Padding(
@@ -217,9 +217,11 @@ class _Content extends StatelessWidget {
                       child: Row(
                         children: [
                           const Icon(Icons.chevron_left),
-                          Consumer(
-                            builder: (context, ref, child) {
-                              final branch = ref.watch(clubBranchProvider);
+                          Builder(
+                            builder: (context) {
+                              final branch = context.select(
+                                (BranchCubit cubit) => cubit.state,
+                              );
 
                               return Text(
                                 '${branch.toString()} - $title',

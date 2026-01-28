@@ -100,23 +100,11 @@ abstract class AppLocalizations {
   /// **'LDV App'**
   String get appTitle;
 
-  /// No description provided for @clubBranchPark.
+  /// No description provided for @unknown.
   ///
   /// In de, this message translates to:
-  /// **'Park'**
-  String get clubBranchPark;
-
-  /// No description provided for @clubBranchMill.
-  ///
-  /// In de, this message translates to:
-  /// **'Mühle'**
-  String get clubBranchMill;
-
-  /// No description provided for @clubBranchTheater.
-  ///
-  /// In de, this message translates to:
-  /// **'Theater'**
-  String get clubBranchTheater;
+  /// **'Unbekannt'**
+  String get unknown;
 
   /// No description provided for @tasks.
   ///
@@ -135,6 +123,30 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Hochzeiten'**
   String get weddings;
+
+  /// No description provided for @park.
+  ///
+  /// In de, this message translates to:
+  /// **'Park'**
+  String get park;
+
+  /// No description provided for @mill.
+  ///
+  /// In de, this message translates to:
+  /// **'Mühle'**
+  String get mill;
+
+  /// No description provided for @theater.
+  ///
+  /// In de, this message translates to:
+  /// **'Theater'**
+  String get theater;
+
+  /// No description provided for @error.
+  ///
+  /// In de, this message translates to:
+  /// **'Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.'**
+  String get error;
 }
 
 class _AppLocalizationsDelegate

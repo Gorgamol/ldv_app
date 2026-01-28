@@ -1,9 +1,11 @@
 {
     "appTitle": "LDV App",
-    "clubBranchPark": "Park",
-    "clubBranchMill": "Mühle",
-    "clubBranchTheater": "Theater",
+    "unknown": "Unbekannt",
     "tasks": "Aufgaben",
-     "maintenance": "Wartung",
-    "weddings": "Hochzeiten"
+    "maintenance": "Wartung",
+    "weddings": "Hochzeiten",
+    "park": "Park",
+    "mill": "Mühle",
+    "theater": "Theater",
+    "error": "Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal."
 }
