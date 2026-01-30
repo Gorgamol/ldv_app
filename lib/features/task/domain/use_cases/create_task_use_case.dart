@@ -9,7 +9,26 @@ class CreateTaskUseCase {
 
   final TaskRepository _taskRepository;
 
-  Future<void> call({required Task task, required Branch branch}) async {
-    return await _taskRepository.createTask(task: task, branch: branch);
+  Future<({Task? success, String? error})> call({
+    required Task task,
+    required Branch branch,
+  }) async {
+    if (task.title.isEmpty) {
+      return (success: null, error: 'Aufgaben Titel darf nicht leer sein.');
+    }
+
+    if (task.description.isEmpty) {
+      return (
+        success: null,
+        error: 'Aufgaben Beschreibung darf nicht leer sein.',
+      );
+    }
+
+    final newTask = await _taskRepository.createTask(
+      task: task,
+      branch: branch,
+    );
+
+    return (success: newTask, error: null);
   }
 }

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskState {
 
- BaseStatus get status; List<Task> get tasks; String? get error;
+ BaseStatus get status; List<Task> get tasks; List<Task> get filteredTasks; TaskFilter get filter; String? get error;
 /// Create a copy of TaskState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TaskStateCopyWith<TaskState> get copyWith => _$TaskStateCopyWithImpl<TaskState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.tasks, tasks)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.tasks, tasks)&&const DeepCollectionEquality().equals(other.filteredTasks, filteredTasks)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(tasks),error);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(tasks),const DeepCollectionEquality().hash(filteredTasks),filter,error);
 
 @override
 String toString() {
-  return 'TaskState(status: $status, tasks: $tasks, error: $error)';
+  return 'TaskState(status: $status, tasks: $tasks, filteredTasks: $filteredTasks, filter: $filter, error: $error)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $TaskStateCopyWith<$Res>  {
   factory $TaskStateCopyWith(TaskState value, $Res Function(TaskState) _then) = _$TaskStateCopyWithImpl;
 @useResult
 $Res call({
- BaseStatus status, List<Task> tasks, String? error
+ BaseStatus status, List<Task> tasks, List<Task> filteredTasks, TaskFilter filter, String? error
 });
 
 
-
+$TaskFilterCopyWith<$Res> get filter;
 
 }
 /// @nodoc
@@ -62,15 +62,26 @@ class _$TaskStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? tasks = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? tasks = null,Object? filteredTasks = null,Object? filter = null,Object? error = freezed,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as BaseStatus,tasks: null == tasks ? _self.tasks : tasks // ignore: cast_nullable_to_non_nullable
-as List<Task>,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as List<Task>,filteredTasks: null == filteredTasks ? _self.filteredTasks : filteredTasks // ignore: cast_nullable_to_non_nullable
+as List<Task>,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
+as TaskFilter,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
-
+/// Create a copy of TaskState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TaskFilterCopyWith<$Res> get filter {
+  
+  return $TaskFilterCopyWith<$Res>(_self.filter, (value) {
+    return _then(_self.copyWith(filter: value));
+  });
+}
 }
 
 
@@ -152,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BaseStatus status,  List<Task> tasks,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BaseStatus status,  List<Task> tasks,  List<Task> filteredTasks,  TaskFilter filter,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskState() when $default != null:
-return $default(_that.status,_that.tasks,_that.error);case _:
+return $default(_that.status,_that.tasks,_that.filteredTasks,_that.filter,_that.error);case _:
   return orElse();
 
 }
@@ -173,10 +184,10 @@ return $default(_that.status,_that.tasks,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BaseStatus status,  List<Task> tasks,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BaseStatus status,  List<Task> tasks,  List<Task> filteredTasks,  TaskFilter filter,  String? error)  $default,) {final _that = this;
 switch (_that) {
 case _TaskState():
-return $default(_that.status,_that.tasks,_that.error);case _:
+return $default(_that.status,_that.tasks,_that.filteredTasks,_that.filter,_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +204,10 @@ return $default(_that.status,_that.tasks,_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BaseStatus status,  List<Task> tasks,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BaseStatus status,  List<Task> tasks,  List<Task> filteredTasks,  TaskFilter filter,  String? error)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskState() when $default != null:
-return $default(_that.status,_that.tasks,_that.error);case _:
+return $default(_that.status,_that.tasks,_that.filteredTasks,_that.filter,_that.error);case _:
   return null;
 
 }
@@ -208,7 +219,7 @@ return $default(_that.status,_that.tasks,_that.error);case _:
 
 
 class _TaskState implements TaskState {
-  const _TaskState({this.status = BaseStatus.init, final  List<Task> tasks = const [], this.error}): _tasks = tasks;
+  const _TaskState({this.status = BaseStatus.init, final  List<Task> tasks = const [], final  List<Task> filteredTasks = const [], this.filter = const TaskFilter(), this.error}): _tasks = tasks,_filteredTasks = filteredTasks;
   
 
 @override@JsonKey() final  BaseStatus status;
@@ -219,6 +230,14 @@ class _TaskState implements TaskState {
   return EqualUnmodifiableListView(_tasks);
 }
 
+ final  List<Task> _filteredTasks;
+@override@JsonKey() List<Task> get filteredTasks {
+  if (_filteredTasks is EqualUnmodifiableListView) return _filteredTasks;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_filteredTasks);
+}
+
+@override@JsonKey() final  TaskFilter filter;
 @override final  String? error;
 
 /// Create a copy of TaskState
@@ -231,16 +250,16 @@ _$TaskStateCopyWith<_TaskState> get copyWith => __$TaskStateCopyWithImpl<_TaskSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._tasks, _tasks)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._tasks, _tasks)&&const DeepCollectionEquality().equals(other._filteredTasks, _filteredTasks)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_tasks),error);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_tasks),const DeepCollectionEquality().hash(_filteredTasks),filter,error);
 
 @override
 String toString() {
-  return 'TaskState(status: $status, tasks: $tasks, error: $error)';
+  return 'TaskState(status: $status, tasks: $tasks, filteredTasks: $filteredTasks, filter: $filter, error: $error)';
 }
 
 
@@ -251,11 +270,11 @@ abstract mixin class _$TaskStateCopyWith<$Res> implements $TaskStateCopyWith<$Re
   factory _$TaskStateCopyWith(_TaskState value, $Res Function(_TaskState) _then) = __$TaskStateCopyWithImpl;
 @override @useResult
 $Res call({
- BaseStatus status, List<Task> tasks, String? error
+ BaseStatus status, List<Task> tasks, List<Task> filteredTasks, TaskFilter filter, String? error
 });
 
 
-
+@override $TaskFilterCopyWith<$Res> get filter;
 
 }
 /// @nodoc
@@ -268,16 +287,27 @@ class __$TaskStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? tasks = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? tasks = null,Object? filteredTasks = null,Object? filter = null,Object? error = freezed,}) {
   return _then(_TaskState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as BaseStatus,tasks: null == tasks ? _self._tasks : tasks // ignore: cast_nullable_to_non_nullable
-as List<Task>,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as List<Task>,filteredTasks: null == filteredTasks ? _self._filteredTasks : filteredTasks // ignore: cast_nullable_to_non_nullable
+as List<Task>,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
+as TaskFilter,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
 
-
+/// Create a copy of TaskState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TaskFilterCopyWith<$Res> get filter {
+  
+  return $TaskFilterCopyWith<$Res>(_self.filter, (value) {
+    return _then(_self.copyWith(filter: value));
+  });
+}
 }
 
 // dart format on

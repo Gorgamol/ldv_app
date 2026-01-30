@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ldv_app/core/theme/ldv_colors.dart';
 
 class LdvUiConstants {
-  BoxDecoration boxDecorationRounded({bool withShadow = true}) {
+  BoxDecoration boxDecorationRounded({
+    bool withShadow = true,
+    Color color = Colors.white,
+  }) {
     return BoxDecoration(
-      color: _ldvColors.white,
+      color: color,
       borderRadius: roundedBorderRadius,
       border: Border.all(width: 1.5),
       boxShadow: withShadow

@@ -13,8 +13,9 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:ldv_app/core/api/ldv_http_client.dart' as _i755;
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart' as _i999;
-import 'package:ldv_app/features/task/adapter/in/edit_task_cubit.dart' as _i612;
 import 'package:ldv_app/features/task/adapter/in/task_cubit.dart' as _i1040;
+import 'package:ldv_app/features/task/adapter/in/task_details_cubit.dart'
+    as _i149;
 import 'package:ldv_app/features/task/adapter/out/task_http_adapter.dart'
     as _i915;
 import 'package:ldv_app/features/task/di.dart' as _i598;
@@ -22,10 +23,14 @@ import 'package:ldv_app/features/task/domain/interfaces/task_repository.dart'
     as _i555;
 import 'package:ldv_app/features/task/domain/use_cases/create_task_use_case.dart'
     as _i914;
+import 'package:ldv_app/features/task/domain/use_cases/filter_tasks_use_case.dart'
+    as _i837;
 import 'package:ldv_app/features/task/domain/use_cases/load_all_tasks_use_case.dart'
     as _i279;
 import 'package:ldv_app/features/task/domain/use_cases/load_task_use_case.dart'
     as _i813;
+import 'package:ldv_app/features/task/domain/use_cases/update_task_use_case.dart'
+    as _i214;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -40,6 +45,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i555.TaskRepository>(
       () => taskDependencyInjectionModule.taskRepository,
     );
+    gh.factory<_i837.FilterTasksUseCase>(
+      () => const _i837.FilterTasksUseCase(),
+    );
     gh.lazySingleton<_i999.BranchCubit>(() => _i999.BranchCubit());
     gh.factory<_i915.TaskHttpAdapter>(
       () => _i915.TaskHttpAdapter(gh<_i755.LdvHttpClient>()),
@@ -53,11 +61,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i813.LoadTaskUseCase>(
       () => _i813.LoadTaskUseCase(gh<_i555.TaskRepository>()),
     );
-    gh.factory<_i612.EditTaskCubit>(
-      () => _i612.EditTaskCubit(gh<_i914.CreateTaskUseCase>()),
+    gh.factory<_i214.UpdateTaskUseCase>(
+      () => _i214.UpdateTaskUseCase(gh<_i555.TaskRepository>()),
+    );
+    gh.factory<_i149.TaskDetailsCubit>(
+      () => _i149.TaskDetailsCubit(
+        gh<_i813.LoadTaskUseCase>(),
+        gh<_i914.CreateTaskUseCase>(),
+        gh<_i214.UpdateTaskUseCase>(),
+      ),
     );
     gh.factory<_i1040.TaskCubit>(
-      () => _i1040.TaskCubit(gh<_i279.LoadAllTasksUseCase>()),
+      () => _i1040.TaskCubit(
+        gh<_i279.LoadAllTasksUseCase>(),
+        gh<_i837.FilterTasksUseCase>(),
+      ),
     );
     return this;
   }

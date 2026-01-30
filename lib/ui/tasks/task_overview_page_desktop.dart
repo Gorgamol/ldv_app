@@ -3,8 +3,8 @@ import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/ui/widgets/ldv_circle_button.dart';
 import 'package:ldv_app/ui/widgets/ldv_scaffold_desktop.dart';
 
-class TasksPageDesktop extends StatelessWidget {
-  const TasksPageDesktop({super.key});
+class TaskOverviewPageDesktop extends StatelessWidget {
+  const TaskOverviewPageDesktop({super.key});
 
   @override
   Widget build(BuildContext context) {

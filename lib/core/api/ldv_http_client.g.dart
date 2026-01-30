@@ -51,20 +51,15 @@ class _LdvHttpClient implements LdvHttpClient {
   }
 
   @override
-  Future<void> createTask({
+  Future<TaskDto> createTask({
     required Branch branch,
-    String? title,
-    String? description,
-    TaskPriority? priority,
-    TaskStatus? status,
-    String? author,
+    required TaskDto task,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'branch': branch};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = title;
-    final _options = _setStreamType<void>(
+    final _data = task;
+    final _options = _setStreamType<TaskDto>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -74,7 +69,15 @@ class _LdvHttpClient implements LdvHttpClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, Object?>>(_options);
+    late TaskDto _value;
+    try {
+      _value = TaskDto.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -105,20 +108,11 @@ class _LdvHttpClient implements LdvHttpClient {
   }
 
   @override
-  Future<void> updateTask({
-    required String id,
-    String? title,
-    String? description,
-    TaskPriority? priority,
-    TaskStatus? status,
-    String? author,
-    Branch? branch,
-  }) async {
+  Future<void> updateTask({required String id, required TaskDto task}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = title;
+    final _data = task;
     final _options = _setStreamType<void>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(

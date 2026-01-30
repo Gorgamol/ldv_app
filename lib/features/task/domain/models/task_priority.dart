@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:ldv_app/core/theme/ldv_colors.dart';
+
 enum TaskPriority {
   low,
   normal,
@@ -20,6 +23,23 @@ enum TaskPriority {
       normal => 'Normal',
       high => 'Hoch',
       _ => 'Unbekannt',
+    };
+  }
+
+  Color toColor() {
+    return switch (this) {
+      high => LdvColors().bitterSweetLight,
+      normal => LdvColors().white,
+      low => LdvColors().dustyGrayLight,
+      _ => Colors.transparent,
+    };
+  }
+
+  Widget toIcon() {
+    return switch (this) {
+      high => const Icon(Icons.keyboard_double_arrow_up),
+      low => const Icon(Icons.keyboard_double_arrow_down),
+      _ => const SizedBox.shrink(),
     };
   }
 

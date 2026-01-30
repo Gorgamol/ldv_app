@@ -26,14 +26,20 @@ class TaskHttpAdapter implements TaskRepository {
   }
 
   @override
-  Future<void> createTask({required Task task, required Branch branch}) async {
-    await _client.createTask(
+  Future<Task> createTask({required Task task, required Branch branch}) async {
+    final taskDto = await _client.createTask(
       branch: branch,
-      title: task.title,
-      description: task.description,
-      author: task.author,
-      priority: task.priority,
-      status: task.status,
+      task: task.toDto(branch: branch),
+    );
+
+    return taskDto.toDomain();
+  }
+
+  @override
+  Future<void> updateTask({required Task task}) async {
+    await _client.updateTask(
+      id: task.id,
+      task: task.toDto(branch: .unknown),
     );
   }
 }
@@ -46,6 +52,22 @@ extension _TaskDtoExtension on TaskDto {
       description: description,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      author: author,
+      priority: priority,
+      status: status,
+    );
+  }
+}
+
+extension _TaskDomainExtension on Task {
+  TaskDto toDto({required Branch branch}) {
+    return TaskDto(
+      branch: branch.toString(),
+      id: 0,
+      title: title,
+      description: description,
+      createdAt: createdAt ?? DateTime.now(),
+      updatedAt: updatedAt ?? DateTime.now(),
       author: author,
       priority: priority,
       status: status,

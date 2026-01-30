@@ -2,8 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ldv_app/core/api/dtos/task_dto.dart';
 import 'package:ldv_app/features/branch/domain/models/branch.dart';
-import 'package:ldv_app/features/task/domain/models/task_priority.dart';
-import 'package:ldv_app/features/task/domain/models/task_status.dart';
+
 import 'package:retrofit/retrofit.dart';
 
 part 'ldv_http_client.g.dart';
@@ -22,13 +21,9 @@ abstract class LdvHttpClient {
   });
 
   @POST('/tasks')
-  Future<void> createTask({
+  Future<TaskDto> createTask({
     @Query('branch') required Branch branch,
-    @Body() String? title,
-    @Body() String? description,
-    @Body() TaskPriority? priority,
-    @Body() TaskStatus? status,
-    @Body() String? author,
+    @Body() required TaskDto task,
   });
 
   @GET('/tasks/{id}')
@@ -37,12 +32,7 @@ abstract class LdvHttpClient {
   @PATCH('/tasks/{id}')
   Future<void> updateTask({
     @Path() required String id,
-    @Body() String? title,
-    @Body() String? description,
-    @Body() TaskPriority? priority,
-    @Body() TaskStatus? status,
-    @Body() String? author,
-    @Body() Branch? branch,
+    @Body() required TaskDto task,
   });
 
   @DELETE('/tasks/{id}')

@@ -7,7 +7,7 @@ class LdvTheme {
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: _ldvColors.bitterSweet,
       ),
-      scaffoldBackgroundColor: _ldvColors.grey,
+      scaffoldBackgroundColor: _ldvColors.white,
     );
   }
 

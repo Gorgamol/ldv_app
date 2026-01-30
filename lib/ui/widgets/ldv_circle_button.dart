@@ -4,13 +4,13 @@ import 'package:ldv_app/core/utils/build_context_extensions.dart';
 class LdvCircleButton extends StatelessWidget {
   const LdvCircleButton({
     super.key,
-    required this.onTap,
-    required this.child,
+    this.onTap,
+    this.child,
     this.decorationImage,
   });
 
-  final VoidCallback onTap;
-  final Widget child;
+  final VoidCallback? onTap;
+  final Widget? child;
   final DecorationImage? decorationImage;
 
   @override

@@ -21,6 +21,13 @@ enum Branch {
     _ => L10n.current.unknown,
   };
 
+  String asAsset() => switch (this) {
+    park => 'assets/images/logo_park.png',
+    mill => 'assets/images/logo_mill.png',
+    theater => 'assets/images/logo_theater.png',
+    _ => 'assets/images/logo_ldv.png',
+  };
+
   static Branch fromString({required String value}) {
     return switch (value) {
       'park' => park,
