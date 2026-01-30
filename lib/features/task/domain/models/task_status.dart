@@ -39,7 +39,7 @@ enum TaskStatus {
     return switch (this) {
       discarded => const Icon(Icons.delete_outline),
       finished => const Icon(Icons.check_circle_outline),
-      _ => const SizedBox.shrink(),
+      _ => Icon(Icons.circle_outlined),
     };
   }
 

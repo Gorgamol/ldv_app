@@ -10,6 +10,8 @@ import 'package:ldv_app/features/task/adapter/in/task_details_state.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
 import 'package:ldv_app/ui/widgets/ldv_circle_button.dart';
+import 'package:ldv_app/ui/widgets/ldv_loading_spinner.dart';
+import 'package:ldv_app/ui/widgets/ldv_rounded_button.dart';
 import 'package:ldv_app/ui/widgets/ldv_scaffold_mobile.dart';
 import 'package:ldv_app/ui/widgets/ldv_snackbar.dart';
 
@@ -51,6 +53,14 @@ class TaskDetailsPage extends StatelessWidget {
               message: 'Aufgabe wurde angelegt.',
             );
           }
+
+          if (state.status == .success && state.taskDeleted) {
+            showLdvSnackbar(
+              context: context,
+              message: 'Aufgabe wurde gelöscht.',
+            );
+            context.go(context.ldvRoutes.tasks);
+          }
         },
         child: const _TaskCreateView(),
       ),
@@ -71,148 +81,157 @@ class _TaskCreateView extends StatelessWidget {
       title: state.isCreationMode ? 'Aufgabe erstellen' : 'Details',
       onBack: () => context.go(context.ldvRoutes.tasks),
       showBranchText: false,
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              if (createdAt != null) ...[
-                Expanded(
-                  child: LdvTextField(
-                    label: 'Erstellt am',
-                    value: DateFormat('dd. MMMM yyyy').format(createdAt),
-                    textAlign: .center,
-                    enabled: false,
-                  ),
-                ),
-                SizedBox(width: context.ldvUiConstants.mobileSpacingBig),
-              ],
-              if (updatedAt != null) ...[
-                Expanded(
-                  child: LdvTextField(
-                    label: 'Aktualisiert am',
-                    value: DateFormat('dd. MMMM yyyy').format(updatedAt),
-                    textAlign: .center,
-                    enabled: false,
-                  ),
-                ),
-              ],
-            ],
-          ),
-          SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
-          const _CreatedBy(),
-          SizedBox(height: context.ldvUiConstants.mobileSpacingSmall),
-          const _AssignedTo(),
-          SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
-          LdvTextField(
-            value: state.editedTask?.title ?? state.task.title,
-            lines: 1,
-            label: 'Titel',
-            enabled: state.isEditMode,
-            onChanged: (value) =>
-                context.read<TaskDetailsCubit>().setTitle(value: value),
-          ),
-          SizedBox(height: context.ldvUiConstants.mobileSpacing),
-          LdvTextField(
-            value: state.editedTask?.description ?? state.task.description,
-            lines: 5,
-            label: 'Aufgabenbeschreibung',
-            enabled: state.isEditMode,
-            onChanged: (value) =>
-                context.read<TaskDetailsCubit>().setDescription(value: value),
-          ),
-          SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
-          Row(
-            children: [
-              Expanded(
-                child: Center(
-                  child: LdvDropdownMenu<TaskPriority>(
-                    label: 'Priorität',
-                    onSelected: (value) {
-                      if (value != null) {
-                        context.read<TaskDetailsCubit>().setPriority(
-                          value: value,
-                        );
-                      }
-                    },
-                    initial: state.editedTask?.priority ?? state.task.priority,
-                    color:
-                        state.editedTask?.priority.toColor() ??
-                        state.task.priority.toColor(),
-                    enabled: state.isEditMode,
-                    disabledWidget: Row(
-                      children: [
-                        Text(
-                          state.editedTask?.priority.toStringTranslated() ??
-                              state.task.priority.toStringTranslated(),
+      content: state.status == .loading
+          ? const Center(child: LdvLoadingSpinner(loadingHint: 'Laden...'))
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    if (createdAt != null) ...[
+                      Expanded(
+                        child: LdvTextField(
+                          label: 'Erstellt am',
+                          value: DateFormat('dd. MMMM yyyy').format(createdAt),
+                          textAlign: .center,
+                          enabled: false,
                         ),
-                        const Spacer(),
-                        state.editedTask?.priority.toIcon() ??
-                            state.task.priority.toIcon(),
-                      ],
-                    ),
-                    entries:
-                        [
-                              TaskPriority.high,
-                              TaskPriority.normal,
-                              TaskPriority.low,
-                            ]
-                            .map(
-                              (priority) => DropdownMenuEntry<TaskPriority>(
-                                value: priority,
-                                label: priority.toStringTranslated(),
-                                trailingIcon: priority.toIcon(),
-                              ),
-                            )
-                            .toList(),
-                  ),
-                ),
-              ),
-              SizedBox(width: context.ldvUiConstants.mobileSpacingBig),
-              Expanded(
-                child: LdvDropdownMenu<TaskStatus>(
-                  label: 'Status',
-                  onSelected: (value) {
-                    if (value != null) {
-                      context.read<TaskDetailsCubit>().setStatus(value: value);
-                    }
-                  },
-                  initial: state.editedTask?.status ?? state.task.status,
-                  color:
-                      state.editedTask?.status.toColor() ??
-                      state.task.status.toColor(),
-                  enabled: state.isEditMode,
-                  disabledWidget: Row(
-                    children: [
-                      Text(
-                        state.editedTask?.status.toStringTranslated() ??
-                            state.task.status.toStringTranslated(),
                       ),
-                      const Spacer(),
-                      state.editedTask?.status.toIcon() ??
-                          state.task.status.toIcon(),
+                      SizedBox(width: context.ldvUiConstants.mobileSpacingBig),
                     ],
-                  ),
-                  entries:
-                      [
-                            TaskStatus.finished,
-                            TaskStatus.open,
-                            TaskStatus.discarded,
-                          ]
-                          .map(
-                            (status) => DropdownMenuEntry<TaskStatus>(
-                              value: status,
-                              label: status.toStringTranslated(),
-                              trailingIcon: status.toIcon(),
-                            ),
-                          )
-                          .toList(),
+                    if (updatedAt != null) ...[
+                      Expanded(
+                        child: LdvTextField(
+                          label: 'Aktualisiert am',
+                          value: DateFormat('dd. MMMM yyyy').format(updatedAt),
+                          textAlign: .center,
+                          enabled: false,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+                SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+                const _CreatedBy(),
+                SizedBox(height: context.ldvUiConstants.mobileSpacingSmall),
+                const _AssignedTo(),
+                SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+                LdvTextField(
+                  value: state.editedTask?.title ?? state.task.title,
+                  lines: 1,
+                  label: 'Titel',
+                  enabled: state.isEditMode,
+                  onChanged: (value) =>
+                      context.read<TaskDetailsCubit>().setTitle(value: value),
+                ),
+                SizedBox(height: context.ldvUiConstants.mobileSpacing),
+                LdvTextField(
+                  value:
+                      state.editedTask?.description ?? state.task.description,
+                  lines: 5,
+                  label: 'Aufgabenbeschreibung',
+                  enabled: state.isEditMode,
+                  onChanged: (value) => context
+                      .read<TaskDetailsCubit>()
+                      .setDescription(value: value),
+                ),
+                SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: LdvDropdownMenu<TaskPriority>(
+                          label: 'Priorität',
+                          onSelected: (value) {
+                            if (value != null) {
+                              context.read<TaskDetailsCubit>().setPriority(
+                                value: value,
+                              );
+                            }
+                          },
+                          initial:
+                              state.editedTask?.priority ?? state.task.priority,
+                          color:
+                              state.editedTask?.priority.toColor() ??
+                              state.task.priority.toColor(),
+                          enabled: state.isEditMode,
+                          disabledWidget: Row(
+                            children: [
+                              Text(
+                                state.editedTask?.priority
+                                        .toStringTranslated() ??
+                                    state.task.priority.toStringTranslated(),
+                              ),
+                              const Spacer(),
+                              state.editedTask?.priority.toIcon() ??
+                                  state.task.priority.toIcon(),
+                            ],
+                          ),
+                          entries:
+                              [
+                                    TaskPriority.high,
+                                    TaskPriority.normal,
+                                    TaskPriority.low,
+                                  ]
+                                  .map(
+                                    (priority) =>
+                                        DropdownMenuEntry<TaskPriority>(
+                                          value: priority,
+                                          label: priority.toStringTranslated(),
+                                          trailingIcon: priority.toIcon(),
+                                        ),
+                                  )
+                                  .toList(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: context.ldvUiConstants.mobileSpacingBig),
+                    Expanded(
+                      child: LdvDropdownMenu<TaskStatus>(
+                        label: 'Status',
+                        onSelected: (value) {
+                          if (value != null) {
+                            context.read<TaskDetailsCubit>().setStatus(
+                              value: value,
+                            );
+                          }
+                        },
+                        initial: state.editedTask?.status ?? state.task.status,
+                        color:
+                            state.editedTask?.status.toColor() ??
+                            state.task.status.toColor(),
+                        enabled: state.isEditMode,
+                        disabledWidget: Row(
+                          children: [
+                            Text(
+                              state.editedTask?.status.toStringTranslated() ??
+                                  state.task.status.toStringTranslated(),
+                            ),
+                            const Spacer(),
+                            state.editedTask?.status.toIcon() ??
+                                state.task.status.toIcon(),
+                          ],
+                        ),
+                        entries:
+                            [
+                                  TaskStatus.finished,
+                                  TaskStatus.open,
+                                  TaskStatus.discarded,
+                                ]
+                                .map(
+                                  (status) => DropdownMenuEntry<TaskStatus>(
+                                    value: status,
+                                    label: status.toStringTranslated(),
+                                    trailingIcon: status.toIcon(),
+                                  ),
+                                )
+                                .toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
       floatingActionButton: Builder(
         builder: (context) {
           final isEditMode = context.select(
@@ -232,8 +251,17 @@ class _TaskCreateView extends StatelessWidget {
                     children: [
                       if (!isCreationMode) ...[
                         LdvCircleButton(
-                          onTap: () {
-                            // Delete Dialog and delete
+                          onTap: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return _DeleteDialog(
+                                  onDelete: () => context
+                                      .read<TaskDetailsCubit>()
+                                      .deleteTask(),
+                                );
+                              },
+                            );
                           },
                           child: const Icon(Icons.delete_outline),
                         ),
@@ -269,6 +297,77 @@ class _TaskCreateView extends StatelessWidget {
                   child: const Icon(Icons.edit_outlined),
                 );
         },
+      ),
+    );
+  }
+}
+
+class _DeleteDialog extends StatelessWidget {
+  const _DeleteDialog({required this.onDelete});
+
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 60),
+      child: Container(
+        decoration: context.ldvUiConstants.boxDecorationRounded(),
+        padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
+        width: double.infinity,
+        child: Column(
+          spacing: context.ldvUiConstants.mobileSpacing,
+          mainAxisSize: .min,
+          children: [
+            const Text('Aufgabe löschen', style: TextStyle(fontWeight: .bold)),
+            const Text(
+              'Möchtest du die Aufgabe wirklich löschen?',
+              textAlign: TextAlign.center,
+            ),
+            Row(
+              children: [
+                SizedBox(width: context.ldvUiConstants.mobileSpacing),
+                Flexible(
+                  child: SizedBox(
+                    height: 30,
+                    child: Material(
+                      borderRadius: context.ldvUiConstants.roundedBorderRadius,
+                      color: Colors.transparent,
+                      clipBehavior: Clip.hardEdge,
+                      shadowColor: Colors.transparent,
+                      child: LdvRoundedButton(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Center(child: Text('Abbrechen')),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: context.ldvUiConstants.mobileSpacing),
+                Flexible(
+                  child: SizedBox(
+                    height: 30,
+                    child: Material(
+                      borderRadius: context.ldvUiConstants.roundedBorderRadius,
+                      clipBehavior: Clip.hardEdge,
+                      color: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      child: LdvRoundedButton(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          onDelete.call();
+                        },
+                        child: const Center(child: Text('Löschen')),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: context.ldvUiConstants.mobileSpacing),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

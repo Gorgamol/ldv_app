@@ -7,6 +7,7 @@ import 'package:ldv_app/features/task/domain/models/task.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
 import 'package:ldv_app/features/task/domain/use_cases/create_task_use_case.dart';
+import 'package:ldv_app/features/task/domain/use_cases/delete_task_use_case.dart';
 import 'package:ldv_app/features/task/domain/use_cases/load_task_use_case.dart';
 import 'package:ldv_app/features/task/domain/use_cases/update_task_use_case.dart';
 
@@ -16,11 +17,13 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     this._loadTaskUseCase,
     this._createTaskUseCase,
     this._updateTaskUseCase,
+    this._deleteTaskUseCase,
   ) : super(const TaskDetailsState());
 
   final LoadTaskUseCase _loadTaskUseCase;
   final CreateTaskUseCase _createTaskUseCase;
   final UpdateTaskUseCase _updateTaskUseCase;
+  final DeleteTaskUseCase _deleteTaskUseCase;
 
   Future<void> loadTask({required String id}) async {
     emit(state.copyWith(status: .loading));
@@ -85,7 +88,8 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
           state.copyWith(
             status: result.error != null ? .failure : .success,
             task: result.error != null ? task : result.success,
-            taskUpdated: result.error != null,
+            taskUpdated: result.error == null,
+            editedTask: null,
             error: result.error,
             isEditMode: result.error != null,
           ),
@@ -117,6 +121,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
             taskCreated: true,
             isEditMode: false,
             isCreationMode: false,
+            editedTask: null,
           ),
         );
       }
@@ -158,6 +163,18 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
     if (editedTask != null) {
       emit(state.copyWith(status: .success, editedTask: editedTask));
+    }
+  }
+
+  Future<void> deleteTask() async {
+    emit(state.copyWith(status: .loading));
+
+    try {
+      await _deleteTaskUseCase(task: state.task);
+
+      emit(state.copyWith(status: .success, taskDeleted: true));
+    } catch (exception) {
+      emit(state.copyWith(status: .failure, error: L10n.current.error));
     }
   }
 }

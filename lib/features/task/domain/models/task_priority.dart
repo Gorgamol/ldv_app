@@ -39,7 +39,7 @@ enum TaskPriority {
     return switch (this) {
       high => const Icon(Icons.keyboard_double_arrow_up),
       low => const Icon(Icons.keyboard_double_arrow_down),
-      _ => const SizedBox.shrink(),
+      _ => const Icon(Icons.horizontal_rule),
     };
   }
 

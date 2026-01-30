@@ -13,7 +13,7 @@ class MaintenancePageMobile extends StatelessWidget {
       title: context.translate.maintenance,
       onBack: () => context.go(context.ldvRoutes.dashboard),
       content: const Center(
-        child: Text('An dieser View wird noch gearbeitet! :)'),
+        child: Text('An diesem Bereich wird noch gearbeitet! :)'),
       ),
       bottomNavigationBar: const BottomNavigationBarMobile(),
     );

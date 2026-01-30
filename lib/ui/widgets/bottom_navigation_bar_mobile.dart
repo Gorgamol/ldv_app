@@ -110,12 +110,12 @@ class BottomNavigationBarMobile extends StatelessWidget {
         title: context.translate.maintenance,
       ),
       SideBarItem(
-        icon: const Icon(Icons.festival_outlined),
+        icon: const Icon(Icons.calendar_month),
         active: currentRoute == '/weddings',
         onTap: () {
           context.replace('/weddings');
         },
-        title: context.translate.weddings,
+        title: 'Kalender',
       ),
     ];
   }
@@ -141,6 +141,14 @@ class BottomNavigationBarMobile extends StatelessWidget {
         },
         title: context.translate.maintenance,
       ),
+      SideBarItem(
+        icon: const Icon(Icons.calendar_month),
+        active: currentRoute == '/weddings',
+        onTap: () {
+          context.replace('/weddings');
+        },
+        title: 'Kalender',
+      ),
     ];
   }
 
@@ -156,6 +164,14 @@ class BottomNavigationBarMobile extends StatelessWidget {
           context.replace('/tasks');
         },
         title: context.translate.tasks,
+      ),
+      SideBarItem(
+        icon: const Icon(Icons.calendar_month),
+        active: currentRoute == '/weddings',
+        onTap: () {
+          context.replace('/weddings');
+        },
+        title: 'Kalender',
       ),
     ];
   }

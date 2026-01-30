@@ -6,9 +6,6 @@ class WeddingsPageDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LdvScaffoldDesktop(
-      title: 'Hochzeiten',
-      content: Placeholder(),
-    );
+    return const LdvScaffoldDesktop(title: 'Kalender', content: Placeholder());
   }
 }

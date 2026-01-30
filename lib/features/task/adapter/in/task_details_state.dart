@@ -14,6 +14,7 @@ abstract class TaskDetailsState with _$TaskDetailsState {
     @Default(false) bool isCreationMode,
     @Default(false) bool taskCreated,
     @Default(false) bool taskUpdated,
+    @Default(false) bool taskDeleted,
     String? error,
   }) = _TaskDetailsState;
 }

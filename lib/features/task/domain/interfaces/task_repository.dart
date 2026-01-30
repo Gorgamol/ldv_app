@@ -9,4 +9,6 @@ abstract interface class TaskRepository {
   Future<Task> createTask({required Task task, required Branch branch});
 
   Future<void> updateTask({required Task task});
+
+  Future<void> deleteTask({required Task task});
 }

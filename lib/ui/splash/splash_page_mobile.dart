@@ -48,6 +48,8 @@ class _SplashPageMobileState extends State<SplashPageMobile>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent),
+      extendBodyBehindAppBar: true,
       backgroundColor: context.ldvColors.white,
       body: Center(
         child: Column(

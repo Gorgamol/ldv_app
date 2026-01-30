@@ -23,6 +23,8 @@ import 'package:ldv_app/features/task/domain/interfaces/task_repository.dart'
     as _i555;
 import 'package:ldv_app/features/task/domain/use_cases/create_task_use_case.dart'
     as _i914;
+import 'package:ldv_app/features/task/domain/use_cases/delete_task_use_case.dart'
+    as _i232;
 import 'package:ldv_app/features/task/domain/use_cases/filter_tasks_use_case.dart'
     as _i837;
 import 'package:ldv_app/features/task/domain/use_cases/load_all_tasks_use_case.dart'
@@ -55,6 +57,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i914.CreateTaskUseCase>(
       () => _i914.CreateTaskUseCase(gh<_i555.TaskRepository>()),
     );
+    gh.factory<_i232.DeleteTaskUseCase>(
+      () => _i232.DeleteTaskUseCase(gh<_i555.TaskRepository>()),
+    );
     gh.factory<_i279.LoadAllTasksUseCase>(
       () => _i279.LoadAllTasksUseCase(gh<_i555.TaskRepository>()),
     );
@@ -64,17 +69,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i214.UpdateTaskUseCase>(
       () => _i214.UpdateTaskUseCase(gh<_i555.TaskRepository>()),
     );
+    gh.factory<_i1040.TaskCubit>(
+      () => _i1040.TaskCubit(
+        gh<_i279.LoadAllTasksUseCase>(),
+        gh<_i837.FilterTasksUseCase>(),
+      ),
+    );
     gh.factory<_i149.TaskDetailsCubit>(
       () => _i149.TaskDetailsCubit(
         gh<_i813.LoadTaskUseCase>(),
         gh<_i914.CreateTaskUseCase>(),
         gh<_i214.UpdateTaskUseCase>(),
-      ),
-    );
-    gh.factory<_i1040.TaskCubit>(
-      () => _i1040.TaskCubit(
-        gh<_i279.LoadAllTasksUseCase>(),
-        gh<_i837.FilterTasksUseCase>(),
+        gh<_i232.DeleteTaskUseCase>(),
       ),
     );
     return this;

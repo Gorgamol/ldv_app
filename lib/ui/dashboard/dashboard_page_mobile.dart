@@ -23,6 +23,8 @@ class _DashboardView extends StatelessWidget {
     final branchCubit = context.read<BranchCubit>();
 
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent),
+      extendBodyBehindAppBar: true,
       body: _BlurredBackground(
         imagePath: 'assets/images/background_mill.jpg',
         child: Padding(

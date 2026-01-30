@@ -42,6 +42,11 @@ class TaskHttpAdapter implements TaskRepository {
       task: task.toDto(branch: .unknown),
     );
   }
+
+  @override
+  Future<void> deleteTask({required Task task}) async {
+    await _client.deleteTask(task.id);
+  }
 }
 
 extension _TaskDtoExtension on TaskDto {

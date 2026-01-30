@@ -6,6 +6,7 @@ import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
 import 'package:ldv_app/features/task/adapter/in/task_cubit.dart';
 import 'package:ldv_app/features/task/adapter/in/task_state.dart';
+import 'package:ldv_app/features/task/domain/models/task.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
 import 'package:ldv_app/ui/widgets/bottom_navigation_bar_mobile.dart';
@@ -104,59 +105,33 @@ class _TaskList extends StatelessWidget {
                   onTap: () {
                     context.go('/tasks/details', extra: task.id);
                   },
+                  color: _getCardColor(task: task),
                   child: Stack(
                     alignment: AlignmentDirectional.center,
                     children: [
                       SizedBox(
                         height: 40,
                         width: double.infinity,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: context.ldvUiConstants.mobileSpacing,
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                task.priority.toStringTranslated(),
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: task.status == .discarded
-                                      ? context.ldvColors.dustyGray
-                                      : context.ldvColors.black,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: context.ldvUiConstants.mobileSpacing,
+                          ),
+                          child: Row(
+                            spacing: context.ldvUiConstants.mobileSpacing,
+                            children: [
+                              SizedBox(
+                                width: 25,
+                                child: task.priority.toIcon(),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  task.title,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Text(
-                                task.title,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: task.status == .discarded
-                                      ? context.ldvColors.dustyGray
-                                      : context.ldvColors.black,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Icon(
-                                switch (task.status) {
-                                  .discarded => Icons.cancel_outlined,
-                                  _ => Icons.check_circle_outline,
-                                },
-                                color: switch (task.status) {
-                                  .discarded => context.ldvColors.dustyGray,
-                                  .open => context.ldvColors.dustyGray,
-                                  _ => Colors.green,
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: context.ldvUiConstants.mobileSpacing,
-                            ),
-                          ],
+                              task.status.toIcon(),
+                            ],
+                          ),
                         ),
                       ),
                       if (task.status == .discarded) ...[
@@ -165,6 +140,8 @@ class _TaskList extends StatelessWidget {
                           height: 1.5,
                           color: context.ldvColors.black,
                           radius: context.ldvUiConstants.roundedBorderRadius,
+                          indent: 15,
+                          endIndent: 15,
                         ),
                       ],
                     ],
@@ -173,6 +150,14 @@ class _TaskList extends StatelessWidget {
               ],
             ],
           );
+  }
+
+  Color _getCardColor({required Task task}) {
+    if (task.status == .discarded || task.status == .finished) {
+      return task.status.toColor();
+    }
+
+    return task.priority.toColor();
   }
 }
 

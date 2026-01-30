@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskDetailsState {
 
- BaseStatus get status; Task get task; Task? get editedTask; bool get isEditMode; bool get isCreationMode; bool get taskCreated; bool get taskUpdated; String? get error;
+ BaseStatus get status; Task get task; Task? get editedTask; bool get isEditMode; bool get isCreationMode; bool get taskCreated; bool get taskUpdated; bool get taskDeleted; String? get error;
 /// Create a copy of TaskDetailsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TaskDetailsStateCopyWith<TaskDetailsState> get copyWith => _$TaskDetailsStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskDetailsState&&(identical(other.status, status) || other.status == status)&&(identical(other.task, task) || other.task == task)&&(identical(other.editedTask, editedTask) || other.editedTask == editedTask)&&(identical(other.isEditMode, isEditMode) || other.isEditMode == isEditMode)&&(identical(other.isCreationMode, isCreationMode) || other.isCreationMode == isCreationMode)&&(identical(other.taskCreated, taskCreated) || other.taskCreated == taskCreated)&&(identical(other.taskUpdated, taskUpdated) || other.taskUpdated == taskUpdated)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskDetailsState&&(identical(other.status, status) || other.status == status)&&(identical(other.task, task) || other.task == task)&&(identical(other.editedTask, editedTask) || other.editedTask == editedTask)&&(identical(other.isEditMode, isEditMode) || other.isEditMode == isEditMode)&&(identical(other.isCreationMode, isCreationMode) || other.isCreationMode == isCreationMode)&&(identical(other.taskCreated, taskCreated) || other.taskCreated == taskCreated)&&(identical(other.taskUpdated, taskUpdated) || other.taskUpdated == taskUpdated)&&(identical(other.taskDeleted, taskDeleted) || other.taskDeleted == taskDeleted)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,task,editedTask,isEditMode,isCreationMode,taskCreated,taskUpdated,error);
+int get hashCode => Object.hash(runtimeType,status,task,editedTask,isEditMode,isCreationMode,taskCreated,taskUpdated,taskDeleted,error);
 
 @override
 String toString() {
-  return 'TaskDetailsState(status: $status, task: $task, editedTask: $editedTask, isEditMode: $isEditMode, isCreationMode: $isCreationMode, taskCreated: $taskCreated, taskUpdated: $taskUpdated, error: $error)';
+  return 'TaskDetailsState(status: $status, task: $task, editedTask: $editedTask, isEditMode: $isEditMode, isCreationMode: $isCreationMode, taskCreated: $taskCreated, taskUpdated: $taskUpdated, taskDeleted: $taskDeleted, error: $error)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TaskDetailsStateCopyWith<$Res>  {
   factory $TaskDetailsStateCopyWith(TaskDetailsState value, $Res Function(TaskDetailsState) _then) = _$TaskDetailsStateCopyWithImpl;
 @useResult
 $Res call({
- BaseStatus status, Task task, Task? editedTask, bool isEditMode, bool isCreationMode, bool taskCreated, bool taskUpdated, String? error
+ BaseStatus status, Task task, Task? editedTask, bool isEditMode, bool isCreationMode, bool taskCreated, bool taskUpdated, bool taskDeleted, String? error
 });
 
 
@@ -62,7 +62,7 @@ class _$TaskDetailsStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskDetailsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? task = null,Object? editedTask = freezed,Object? isEditMode = null,Object? isCreationMode = null,Object? taskCreated = null,Object? taskUpdated = null,Object? error = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? task = null,Object? editedTask = freezed,Object? isEditMode = null,Object? isCreationMode = null,Object? taskCreated = null,Object? taskUpdated = null,Object? taskDeleted = null,Object? error = freezed,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as BaseStatus,task: null == task ? _self.task : task // ignore: cast_nullable_to_non_nullable
@@ -71,6 +71,7 @@ as Task?,isEditMode: null == isEditMode ? _self.isEditMode : isEditMode // ignor
 as bool,isCreationMode: null == isCreationMode ? _self.isCreationMode : isCreationMode // ignore: cast_nullable_to_non_nullable
 as bool,taskCreated: null == taskCreated ? _self.taskCreated : taskCreated // ignore: cast_nullable_to_non_nullable
 as bool,taskUpdated: null == taskUpdated ? _self.taskUpdated : taskUpdated // ignore: cast_nullable_to_non_nullable
+as bool,taskDeleted: null == taskDeleted ? _self.taskDeleted : taskDeleted // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -178,10 +179,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BaseStatus status,  Task task,  Task? editedTask,  bool isEditMode,  bool isCreationMode,  bool taskCreated,  bool taskUpdated,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BaseStatus status,  Task task,  Task? editedTask,  bool isEditMode,  bool isCreationMode,  bool taskCreated,  bool taskUpdated,  bool taskDeleted,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskDetailsState() when $default != null:
-return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.isCreationMode,_that.taskCreated,_that.taskUpdated,_that.error);case _:
+return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.isCreationMode,_that.taskCreated,_that.taskUpdated,_that.taskDeleted,_that.error);case _:
   return orElse();
 
 }
@@ -199,10 +200,10 @@ return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BaseStatus status,  Task task,  Task? editedTask,  bool isEditMode,  bool isCreationMode,  bool taskCreated,  bool taskUpdated,  String? error)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BaseStatus status,  Task task,  Task? editedTask,  bool isEditMode,  bool isCreationMode,  bool taskCreated,  bool taskUpdated,  bool taskDeleted,  String? error)  $default,) {final _that = this;
 switch (_that) {
 case _TaskDetailsState():
-return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.isCreationMode,_that.taskCreated,_that.taskUpdated,_that.error);case _:
+return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.isCreationMode,_that.taskCreated,_that.taskUpdated,_that.taskDeleted,_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -219,10 +220,10 @@ return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BaseStatus status,  Task task,  Task? editedTask,  bool isEditMode,  bool isCreationMode,  bool taskCreated,  bool taskUpdated,  String? error)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BaseStatus status,  Task task,  Task? editedTask,  bool isEditMode,  bool isCreationMode,  bool taskCreated,  bool taskUpdated,  bool taskDeleted,  String? error)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskDetailsState() when $default != null:
-return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.isCreationMode,_that.taskCreated,_that.taskUpdated,_that.error);case _:
+return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.isCreationMode,_that.taskCreated,_that.taskUpdated,_that.taskDeleted,_that.error);case _:
   return null;
 
 }
@@ -234,7 +235,7 @@ return $default(_that.status,_that.task,_that.editedTask,_that.isEditMode,_that.
 
 
 class _TaskDetailsState implements TaskDetailsState {
-  const _TaskDetailsState({this.status = BaseStatus.init, this.task = const Task(), this.editedTask = null, this.isEditMode = false, this.isCreationMode = false, this.taskCreated = false, this.taskUpdated = false, this.error});
+  const _TaskDetailsState({this.status = BaseStatus.init, this.task = const Task(), this.editedTask = null, this.isEditMode = false, this.isCreationMode = false, this.taskCreated = false, this.taskUpdated = false, this.taskDeleted = false, this.error});
   
 
 @override@JsonKey() final  BaseStatus status;
@@ -244,6 +245,7 @@ class _TaskDetailsState implements TaskDetailsState {
 @override@JsonKey() final  bool isCreationMode;
 @override@JsonKey() final  bool taskCreated;
 @override@JsonKey() final  bool taskUpdated;
+@override@JsonKey() final  bool taskDeleted;
 @override final  String? error;
 
 /// Create a copy of TaskDetailsState
@@ -256,16 +258,16 @@ _$TaskDetailsStateCopyWith<_TaskDetailsState> get copyWith => __$TaskDetailsStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskDetailsState&&(identical(other.status, status) || other.status == status)&&(identical(other.task, task) || other.task == task)&&(identical(other.editedTask, editedTask) || other.editedTask == editedTask)&&(identical(other.isEditMode, isEditMode) || other.isEditMode == isEditMode)&&(identical(other.isCreationMode, isCreationMode) || other.isCreationMode == isCreationMode)&&(identical(other.taskCreated, taskCreated) || other.taskCreated == taskCreated)&&(identical(other.taskUpdated, taskUpdated) || other.taskUpdated == taskUpdated)&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskDetailsState&&(identical(other.status, status) || other.status == status)&&(identical(other.task, task) || other.task == task)&&(identical(other.editedTask, editedTask) || other.editedTask == editedTask)&&(identical(other.isEditMode, isEditMode) || other.isEditMode == isEditMode)&&(identical(other.isCreationMode, isCreationMode) || other.isCreationMode == isCreationMode)&&(identical(other.taskCreated, taskCreated) || other.taskCreated == taskCreated)&&(identical(other.taskUpdated, taskUpdated) || other.taskUpdated == taskUpdated)&&(identical(other.taskDeleted, taskDeleted) || other.taskDeleted == taskDeleted)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,task,editedTask,isEditMode,isCreationMode,taskCreated,taskUpdated,error);
+int get hashCode => Object.hash(runtimeType,status,task,editedTask,isEditMode,isCreationMode,taskCreated,taskUpdated,taskDeleted,error);
 
 @override
 String toString() {
-  return 'TaskDetailsState(status: $status, task: $task, editedTask: $editedTask, isEditMode: $isEditMode, isCreationMode: $isCreationMode, taskCreated: $taskCreated, taskUpdated: $taskUpdated, error: $error)';
+  return 'TaskDetailsState(status: $status, task: $task, editedTask: $editedTask, isEditMode: $isEditMode, isCreationMode: $isCreationMode, taskCreated: $taskCreated, taskUpdated: $taskUpdated, taskDeleted: $taskDeleted, error: $error)';
 }
 
 
@@ -276,7 +278,7 @@ abstract mixin class _$TaskDetailsStateCopyWith<$Res> implements $TaskDetailsSta
   factory _$TaskDetailsStateCopyWith(_TaskDetailsState value, $Res Function(_TaskDetailsState) _then) = __$TaskDetailsStateCopyWithImpl;
 @override @useResult
 $Res call({
- BaseStatus status, Task task, Task? editedTask, bool isEditMode, bool isCreationMode, bool taskCreated, bool taskUpdated, String? error
+ BaseStatus status, Task task, Task? editedTask, bool isEditMode, bool isCreationMode, bool taskCreated, bool taskUpdated, bool taskDeleted, String? error
 });
 
 
@@ -293,7 +295,7 @@ class __$TaskDetailsStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskDetailsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? task = null,Object? editedTask = freezed,Object? isEditMode = null,Object? isCreationMode = null,Object? taskCreated = null,Object? taskUpdated = null,Object? error = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? task = null,Object? editedTask = freezed,Object? isEditMode = null,Object? isCreationMode = null,Object? taskCreated = null,Object? taskUpdated = null,Object? taskDeleted = null,Object? error = freezed,}) {
   return _then(_TaskDetailsState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as BaseStatus,task: null == task ? _self.task : task // ignore: cast_nullable_to_non_nullable
@@ -302,6 +304,7 @@ as Task?,isEditMode: null == isEditMode ? _self.isEditMode : isEditMode // ignor
 as bool,isCreationMode: null == isCreationMode ? _self.isCreationMode : isCreationMode // ignore: cast_nullable_to_non_nullable
 as bool,taskCreated: null == taskCreated ? _self.taskCreated : taskCreated // ignore: cast_nullable_to_non_nullable
 as bool,taskUpdated: null == taskUpdated ? _self.taskUpdated : taskUpdated // ignore: cast_nullable_to_non_nullable
+as bool,taskDeleted: null == taskDeleted ? _self.taskDeleted : taskDeleted // ignore: cast_nullable_to_non_nullable
 as bool,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
