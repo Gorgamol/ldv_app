@@ -18,7 +18,7 @@ abstract class TaskDto with _$TaskDto {
     @JsonKey(name: 'priority') required TaskPriority priority,
     @JsonKey(name: 'author') required String author,
     @JsonKey(name: 'branch') required String branch,
-    @JsonKey(name: 'categories') required List<CategoryDto> categories,
+    @JsonKey(name: 'categories') required List<CategoryDto>? categories,
   }) = _TaskDto;
 
   factory TaskDto.fromJson(Map<String, Object?> json) =>

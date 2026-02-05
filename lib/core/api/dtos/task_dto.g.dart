@@ -16,8 +16,8 @@ _TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => _TaskDto(
   priority: $enumDecode(_$TaskPriorityEnumMap, json['priority']),
   author: json['author'] as String,
   branch: json['branch'] as String,
-  categories: (json['categories'] as List<dynamic>)
-      .map((e) => CategoryDto.fromJson(e as Map<String, dynamic>))
+  categories: (json['categories'] as List<dynamic>?)
+      ?.map((e) => CategoryDto.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
