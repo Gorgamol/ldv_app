@@ -58,9 +58,7 @@ jobs:
       # -----------------------------
       - name: Build iOS IPA
         run: |
-          flutter build ipa \
-            --release \
-            --build-number=$GITHUB_RUN_NUMBER
+          flutter build ipa --release --build-number=$GITHUB_RUN_NUMBER --export-options-plist=ios/ExportOptions.plist
 
       # -----------------------------
       # ⬆️ Upload artifact
