@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ldv_app/core/l10n/l10n.dart';
 import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/task/adapter/in/task_state.dart';
+import 'package:ldv_app/features/task/domain/models/category.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
 import 'package:ldv_app/features/task/domain/use_cases/filter_tasks_use_case.dart';
@@ -136,6 +137,58 @@ class TaskCubit extends Cubit<TaskState> {
 
   Future<void> resetStatus() async {
     final changedFilter = state.filter.copyWith(status: []);
+    final filteredTasks = _filterTasksUseCase(
+      tasks: state.tasks,
+      filter: changedFilter,
+    );
+
+    emit(
+      state.copyWith(
+        status: .success,
+        filteredTasks: filteredTasks,
+        filter: changedFilter,
+      ),
+    );
+  }
+
+  Future<void> setCategory({required Category value}) async {
+    final changedFilter = state.filter.copyWith(
+      category: [...state.filter.category, value],
+    );
+    final filteredTasks = _filterTasksUseCase(
+      tasks: state.tasks,
+      filter: changedFilter,
+    );
+
+    emit(
+      state.copyWith(
+        status: .success,
+        filteredTasks: filteredTasks,
+        filter: changedFilter,
+      ),
+    );
+  }
+
+  Future<void> removeCategory({required Category value}) async {
+    final changedFilter = state.filter.copyWith(
+      category: [...state.filter.category]..remove(value),
+    );
+    final filteredTasks = _filterTasksUseCase(
+      tasks: state.tasks,
+      filter: changedFilter,
+    );
+
+    emit(
+      state.copyWith(
+        status: .success,
+        filteredTasks: filteredTasks,
+        filter: changedFilter,
+      ),
+    );
+  }
+
+  Future<void> resetCategory() async {
+    final changedFilter = state.filter.copyWith(category: []);
     final filteredTasks = _filterTasksUseCase(
       tasks: state.tasks,
       filter: changedFilter,

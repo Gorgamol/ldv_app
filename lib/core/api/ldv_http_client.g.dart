@@ -54,6 +54,7 @@ class _LdvHttpClient implements LdvHttpClient {
   Future<TaskDto> createTask({
     required Branch branch,
     required TaskDto task,
+    required List<int> categories,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'branch': branch};
@@ -108,7 +109,11 @@ class _LdvHttpClient implements LdvHttpClient {
   }
 
   @override
-  Future<void> updateTask({required String id, required TaskDto task}) async {
+  Future<void> updateTask({
+    required String id,
+    required TaskDto task,
+    required List<int> categories,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -143,6 +148,67 @@ class _LdvHttpClient implements LdvHttpClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<List<CategoryDto>> getCategories({required Branch branch}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'branch': branch};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<CategoryDto>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/categories',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<CategoryDto> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => CategoryDto.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<CategoryDto>> createCategory({
+    required Map<String, dynamic> body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<List<CategoryDto>>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/categories',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<CategoryDto> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => CategoryDto.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

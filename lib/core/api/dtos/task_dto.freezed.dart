@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskDto {
 
-@JsonKey(name: 'id') int get id;@JsonKey(name: 'title') String get title;@JsonKey(name: 'description') String get description;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(name: 'status') TaskStatus get status;@JsonKey(name: 'priority') TaskPriority get priority;@JsonKey(name: 'author') String get author;@JsonKey(name: 'branch') String get branch;
+@JsonKey(name: 'id') int get id;@JsonKey(name: 'title') String get title;@JsonKey(name: 'description') String get description;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(name: 'status') TaskStatus get status;@JsonKey(name: 'priority') TaskPriority get priority;@JsonKey(name: 'author') String get author;@JsonKey(name: 'branch') String get branch;@JsonKey(name: 'categories') List<CategoryDto> get categories;
 /// Create a copy of TaskDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TaskDtoCopyWith<TaskDto> get copyWith => _$TaskDtoCopyWithImpl<TaskDto>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskDto&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.author, author) || other.author == author)&&(identical(other.branch, branch) || other.branch == branch));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskDto&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.author, author) || other.author == author)&&(identical(other.branch, branch) || other.branch == branch)&&const DeepCollectionEquality().equals(other.categories, categories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description,createdAt,updatedAt,status,priority,author,branch);
+int get hashCode => Object.hash(runtimeType,id,title,description,createdAt,updatedAt,status,priority,author,branch,const DeepCollectionEquality().hash(categories));
 
 @override
 String toString() {
-  return 'TaskDto(id: $id, title: $title, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, priority: $priority, author: $author, branch: $branch)';
+  return 'TaskDto(id: $id, title: $title, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, priority: $priority, author: $author, branch: $branch, categories: $categories)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TaskDtoCopyWith<$Res>  {
   factory $TaskDtoCopyWith(TaskDto value, $Res Function(TaskDto) _then) = _$TaskDtoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch
+@JsonKey(name: 'id') int id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch,@JsonKey(name: 'categories') List<CategoryDto> categories
 });
 
 
@@ -65,7 +65,7 @@ class _$TaskDtoCopyWithImpl<$Res>
 
 /// Create a copy of TaskDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? priority = null,Object? author = null,Object? branch = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? priority = null,Object? author = null,Object? branch = null,Object? categories = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,8 @@ as DateTime,status: null == status ? _self.status : status // ignore: cast_nulla
 as TaskStatus,priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
 as TaskPriority,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as String,branch: null == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
-as String,
+as String,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
+as List<CategoryDto>,
   ));
 }
 
@@ -161,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch, @JsonKey(name: 'categories')  List<CategoryDto> categories)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskDto() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch);case _:
+return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch,_that.categories);case _:
   return orElse();
 
 }
@@ -182,10 +183,10 @@ return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.upd
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch, @JsonKey(name: 'categories')  List<CategoryDto> categories)  $default,) {final _that = this;
 switch (_that) {
 case _TaskDto():
-return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch);case _:
+return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch,_that.categories);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +203,10 @@ return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.upd
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'title')  String title, @JsonKey(name: 'description')  String description, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'status')  TaskStatus status, @JsonKey(name: 'priority')  TaskPriority priority, @JsonKey(name: 'author')  String author, @JsonKey(name: 'branch')  String branch, @JsonKey(name: 'categories')  List<CategoryDto> categories)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskDto() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch);case _:
+return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.updatedAt,_that.status,_that.priority,_that.author,_that.branch,_that.categories);case _:
   return null;
 
 }
@@ -217,7 +218,7 @@ return $default(_that.id,_that.title,_that.description,_that.createdAt,_that.upd
 @JsonSerializable()
 
 class _TaskDto implements TaskDto {
-  const _TaskDto({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'title') required this.title, @JsonKey(name: 'description') required this.description, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(name: 'status') required this.status, @JsonKey(name: 'priority') required this.priority, @JsonKey(name: 'author') required this.author, @JsonKey(name: 'branch') required this.branch});
+  const _TaskDto({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'title') required this.title, @JsonKey(name: 'description') required this.description, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(name: 'status') required this.status, @JsonKey(name: 'priority') required this.priority, @JsonKey(name: 'author') required this.author, @JsonKey(name: 'branch') required this.branch, @JsonKey(name: 'categories') required final  List<CategoryDto> categories}): _categories = categories;
   factory _TaskDto.fromJson(Map<String, dynamic> json) => _$TaskDtoFromJson(json);
 
 @override@JsonKey(name: 'id') final  int id;
@@ -229,6 +230,13 @@ class _TaskDto implements TaskDto {
 @override@JsonKey(name: 'priority') final  TaskPriority priority;
 @override@JsonKey(name: 'author') final  String author;
 @override@JsonKey(name: 'branch') final  String branch;
+ final  List<CategoryDto> _categories;
+@override@JsonKey(name: 'categories') List<CategoryDto> get categories {
+  if (_categories is EqualUnmodifiableListView) return _categories;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_categories);
+}
+
 
 /// Create a copy of TaskDto
 /// with the given fields replaced by the non-null parameter values.
@@ -243,16 +251,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskDto&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.author, author) || other.author == author)&&(identical(other.branch, branch) || other.branch == branch));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskDto&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.status, status) || other.status == status)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.author, author) || other.author == author)&&(identical(other.branch, branch) || other.branch == branch)&&const DeepCollectionEquality().equals(other._categories, _categories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description,createdAt,updatedAt,status,priority,author,branch);
+int get hashCode => Object.hash(runtimeType,id,title,description,createdAt,updatedAt,status,priority,author,branch,const DeepCollectionEquality().hash(_categories));
 
 @override
 String toString() {
-  return 'TaskDto(id: $id, title: $title, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, priority: $priority, author: $author, branch: $branch)';
+  return 'TaskDto(id: $id, title: $title, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, priority: $priority, author: $author, branch: $branch, categories: $categories)';
 }
 
 
@@ -263,7 +271,7 @@ abstract mixin class _$TaskDtoCopyWith<$Res> implements $TaskDtoCopyWith<$Res> {
   factory _$TaskDtoCopyWith(_TaskDto value, $Res Function(_TaskDto) _then) = __$TaskDtoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch
+@JsonKey(name: 'id') int id,@JsonKey(name: 'title') String title,@JsonKey(name: 'description') String description,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'status') TaskStatus status,@JsonKey(name: 'priority') TaskPriority priority,@JsonKey(name: 'author') String author,@JsonKey(name: 'branch') String branch,@JsonKey(name: 'categories') List<CategoryDto> categories
 });
 
 
@@ -280,7 +288,7 @@ class __$TaskDtoCopyWithImpl<$Res>
 
 /// Create a copy of TaskDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? priority = null,Object? author = null,Object? branch = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,Object? createdAt = null,Object? updatedAt = null,Object? status = null,Object? priority = null,Object? author = null,Object? branch = null,Object? categories = null,}) {
   return _then(_TaskDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -291,7 +299,8 @@ as DateTime,status: null == status ? _self.status : status // ignore: cast_nulla
 as TaskStatus,priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
 as TaskPriority,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as String,branch: null == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
-as String,
+as String,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
+as List<CategoryDto>,
   ));
 }
 

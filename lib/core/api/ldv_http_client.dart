@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:ldv_app/core/api/dtos/category_dto.dart';
 import 'package:ldv_app/core/api/dtos/task_dto.dart';
 import 'package:ldv_app/features/branch/domain/models/branch.dart';
 
@@ -24,6 +25,7 @@ abstract class LdvHttpClient {
   Future<TaskDto> createTask({
     @Query('branch') required Branch branch,
     @Body() required TaskDto task,
+    @Body() required List<int> categories,
   });
 
   @GET('/tasks/{id}')
@@ -33,10 +35,21 @@ abstract class LdvHttpClient {
   Future<void> updateTask({
     @Path() required String id,
     @Body() required TaskDto task,
+    @Body() required List<int> categories,
   });
 
   @DELETE('/tasks/{id}')
   Future<void> deleteTask(@Path() String id);
+
+  @GET('/categories')
+  Future<List<CategoryDto>> getCategories({
+    @Query('branch') required Branch branch,
+  });
+
+  @POST('/categories')
+  Future<List<CategoryDto>> createCategory({
+    @Body() required Map<String, dynamic> body,
+  });
 }
 
 @module

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskFilter {
 
- List<TaskPriority> get priority; List<TaskStatus> get status; String get search;
+ List<TaskPriority> get priority; List<TaskStatus> get status; List<Category> get category; String get search;
 /// Create a copy of TaskFilter
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TaskFilterCopyWith<TaskFilter> get copyWith => _$TaskFilterCopyWithImpl<TaskFil
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskFilter&&const DeepCollectionEquality().equals(other.priority, priority)&&const DeepCollectionEquality().equals(other.status, status)&&(identical(other.search, search) || other.search == search));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskFilter&&const DeepCollectionEquality().equals(other.priority, priority)&&const DeepCollectionEquality().equals(other.status, status)&&const DeepCollectionEquality().equals(other.category, category)&&(identical(other.search, search) || other.search == search));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(priority),const DeepCollectionEquality().hash(status),search);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(priority),const DeepCollectionEquality().hash(status),const DeepCollectionEquality().hash(category),search);
 
 @override
 String toString() {
-  return 'TaskFilter(priority: $priority, status: $status, search: $search)';
+  return 'TaskFilter(priority: $priority, status: $status, category: $category, search: $search)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TaskFilterCopyWith<$Res>  {
   factory $TaskFilterCopyWith(TaskFilter value, $Res Function(TaskFilter) _then) = _$TaskFilterCopyWithImpl;
 @useResult
 $Res call({
- List<TaskPriority> priority, List<TaskStatus> status, String search
+ List<TaskPriority> priority, List<TaskStatus> status, List<Category> category, String search
 });
 
 
@@ -62,11 +62,12 @@ class _$TaskFilterCopyWithImpl<$Res>
 
 /// Create a copy of TaskFilter
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? priority = null,Object? status = null,Object? search = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? priority = null,Object? status = null,Object? category = null,Object? search = null,}) {
   return _then(_self.copyWith(
 priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
 as List<TaskPriority>,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as List<TaskStatus>,search: null == search ? _self.search : search // ignore: cast_nullable_to_non_nullable
+as List<TaskStatus>,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as List<Category>,search: null == search ? _self.search : search // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<TaskPriority> priority,  List<TaskStatus> status,  String search)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<TaskPriority> priority,  List<TaskStatus> status,  List<Category> category,  String search)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskFilter() when $default != null:
-return $default(_that.priority,_that.status,_that.search);case _:
+return $default(_that.priority,_that.status,_that.category,_that.search);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.priority,_that.status,_that.search);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<TaskPriority> priority,  List<TaskStatus> status,  String search)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<TaskPriority> priority,  List<TaskStatus> status,  List<Category> category,  String search)  $default,) {final _that = this;
 switch (_that) {
 case _TaskFilter():
-return $default(_that.priority,_that.status,_that.search);case _:
+return $default(_that.priority,_that.status,_that.category,_that.search);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.priority,_that.status,_that.search);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<TaskPriority> priority,  List<TaskStatus> status,  String search)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<TaskPriority> priority,  List<TaskStatus> status,  List<Category> category,  String search)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskFilter() when $default != null:
-return $default(_that.priority,_that.status,_that.search);case _:
+return $default(_that.priority,_that.status,_that.category,_that.search);case _:
   return null;
 
 }
@@ -208,7 +209,7 @@ return $default(_that.priority,_that.status,_that.search);case _:
 
 
 class _TaskFilter implements TaskFilter {
-  const _TaskFilter({final  List<TaskPriority> priority = const [], final  List<TaskStatus> status = const [], this.search = ''}): _priority = priority,_status = status;
+  const _TaskFilter({final  List<TaskPriority> priority = const [], final  List<TaskStatus> status = const [], final  List<Category> category = const [], this.search = ''}): _priority = priority,_status = status,_category = category;
   
 
  final  List<TaskPriority> _priority;
@@ -225,6 +226,13 @@ class _TaskFilter implements TaskFilter {
   return EqualUnmodifiableListView(_status);
 }
 
+ final  List<Category> _category;
+@override@JsonKey() List<Category> get category {
+  if (_category is EqualUnmodifiableListView) return _category;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_category);
+}
+
 @override@JsonKey() final  String search;
 
 /// Create a copy of TaskFilter
@@ -237,16 +245,16 @@ _$TaskFilterCopyWith<_TaskFilter> get copyWith => __$TaskFilterCopyWithImpl<_Tas
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskFilter&&const DeepCollectionEquality().equals(other._priority, _priority)&&const DeepCollectionEquality().equals(other._status, _status)&&(identical(other.search, search) || other.search == search));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskFilter&&const DeepCollectionEquality().equals(other._priority, _priority)&&const DeepCollectionEquality().equals(other._status, _status)&&const DeepCollectionEquality().equals(other._category, _category)&&(identical(other.search, search) || other.search == search));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_priority),const DeepCollectionEquality().hash(_status),search);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_priority),const DeepCollectionEquality().hash(_status),const DeepCollectionEquality().hash(_category),search);
 
 @override
 String toString() {
-  return 'TaskFilter(priority: $priority, status: $status, search: $search)';
+  return 'TaskFilter(priority: $priority, status: $status, category: $category, search: $search)';
 }
 
 
@@ -257,7 +265,7 @@ abstract mixin class _$TaskFilterCopyWith<$Res> implements $TaskFilterCopyWith<$
   factory _$TaskFilterCopyWith(_TaskFilter value, $Res Function(_TaskFilter) _then) = __$TaskFilterCopyWithImpl;
 @override @useResult
 $Res call({
- List<TaskPriority> priority, List<TaskStatus> status, String search
+ List<TaskPriority> priority, List<TaskStatus> status, List<Category> category, String search
 });
 
 
@@ -274,11 +282,12 @@ class __$TaskFilterCopyWithImpl<$Res>
 
 /// Create a copy of TaskFilter
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? priority = null,Object? status = null,Object? search = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? priority = null,Object? status = null,Object? category = null,Object? search = null,}) {
   return _then(_TaskFilter(
 priority: null == priority ? _self._priority : priority // ignore: cast_nullable_to_non_nullable
 as List<TaskPriority>,status: null == status ? _self._status : status // ignore: cast_nullable_to_non_nullable
-as List<TaskStatus>,search: null == search ? _self.search : search // ignore: cast_nullable_to_non_nullable
+as List<TaskStatus>,category: null == category ? _self._category : category // ignore: cast_nullable_to_non_nullable
+as List<Category>,search: null == search ? _self.search : search // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

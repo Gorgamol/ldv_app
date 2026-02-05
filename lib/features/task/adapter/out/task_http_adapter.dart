@@ -1,8 +1,10 @@
 import 'package:injectable/injectable.dart';
+import 'package:ldv_app/core/api/dtos/category_dto.dart';
 import 'package:ldv_app/core/api/dtos/task_dto.dart';
 import 'package:ldv_app/core/api/ldv_http_client.dart';
 import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/task/domain/interfaces/task_repository.dart';
+import 'package:ldv_app/features/task/domain/models/category.dart';
 import 'package:ldv_app/features/task/domain/models/task.dart';
 
 @injectable
@@ -30,6 +32,7 @@ class TaskHttpAdapter implements TaskRepository {
     final taskDto = await _client.createTask(
       branch: branch,
       task: task.toDto(branch: branch),
+      categories: [],
     );
 
     return taskDto.toDomain();
@@ -40,6 +43,7 @@ class TaskHttpAdapter implements TaskRepository {
     await _client.updateTask(
       id: task.id,
       task: task.toDto(branch: .unknown),
+      categories: [],
     );
   }
 
@@ -60,6 +64,11 @@ extension _TaskDtoExtension on TaskDto {
       author: author,
       priority: priority,
       status: status,
+      categories: [
+        const Category(id: '', name: 'Allgemein'),
+        const Category(id: '', name: 'Garten'),
+      ],
+      //categories: categories.map((dto) => dto.toDomain()).toList(),
     );
   }
 }
@@ -76,6 +85,13 @@ extension _TaskDomainExtension on Task {
       author: author,
       priority: priority,
       status: status,
+      categories: [],
     );
+  }
+}
+
+extension _CategoryDtoExtension on CategoryDto {
+  Category toDomain() {
+    return Category(id: id.toString(), name: name);
   }
 }

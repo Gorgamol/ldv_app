@@ -1,4 +1,4 @@
-package com.example.ldv_app
+package de.ldv.app
 
 import io.flutter.embedding.android.FlutterActivity
 

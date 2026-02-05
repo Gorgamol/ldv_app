@@ -4,11 +4,15 @@ import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/injection/injection.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
+import 'package:ldv_app/features/branch/domain/models/branch.dart';
+import 'package:ldv_app/features/task/adapter/in/category_cubit.dart';
+import 'package:ldv_app/features/task/adapter/in/category_state.dart';
 import 'package:ldv_app/features/task/adapter/in/task_cubit.dart';
 import 'package:ldv_app/features/task/adapter/in/task_state.dart';
 import 'package:ldv_app/features/task/domain/models/task.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
+import 'package:ldv_app/ui/tasks/task_details_page.dart';
 import 'package:ldv_app/ui/widgets/bottom_navigation_bar_mobile.dart';
 import 'package:ldv_app/ui/widgets/ldv_circle_button.dart';
 import 'package:ldv_app/ui/widgets/ldv_loading_spinner.dart';
@@ -23,20 +27,46 @@ class TaskOverviewPageMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final branch = context.select((BranchCubit cubit) => cubit.state);
 
-    return BlocProvider(
-      create: (context) {
-        return getIt<TaskCubit>()..loadTasks(branch: branch ?? .unknown);
-      },
-      child: BlocListener<TaskCubit, TaskState>(
-        listener: (context, state) {
-          if (state.status == .failure) {
-            showLdvSnackbar(
-              context: context,
-              message: state.error ?? '',
-              type: .error,
-            );
-          }
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            return getIt<TaskCubit>()..loadTasks(branch: branch ?? .unknown);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return getIt<CategoryCubit>()
+              ..loadCategories(branch: branch ?? .unknown);
+          },
+        ),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<TaskCubit, TaskState>(
+            listener: (context, state) {
+              if (state.status == .failure) {
+                showLdvSnackbar(
+                  context: context,
+                  message: state.error ?? '',
+                  type: .error,
+                );
+              }
+            },
+          ),
+
+          BlocListener<CategoryCubit, CategoryState>(
+            listener: (context, state) {
+              if (state.status == .failure) {
+                showLdvSnackbar(
+                  context: context,
+                  message: state.error ?? '',
+                  type: .error,
+                );
+              }
+            },
+          ),
+        ],
         child: const _TaskOverviewContent(),
       ),
     );
@@ -48,7 +78,10 @@ class _TaskOverviewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final status = context.select((TaskCubit cubit) => cubit.state.status);
+    final taskStatus = context.select((TaskCubit cubit) => cubit.state.status);
+    final categoryStatus = context.select(
+      (CategoryCubit cubit) => cubit.state.status,
+    );
 
     return LdvScaffoldMobile(
       title: context.translate.tasks,
@@ -61,16 +94,17 @@ class _TaskOverviewContent extends StatelessWidget {
           const _StatusFilter(),
           SizedBox(height: context.ldvUiConstants.mobileSpacing),
           const _PriorityFilter(),
+          //SizedBox(height: context.ldvUiConstants.mobileSpacing),
+          //const _CategoryFilter(),
           SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
           Expanded(
-            child: switch (status) {
-              .loading => const Center(
-                child: LdvLoadingSpinner(
-                  loadingHint: 'Aufgaben werden geladen',
-                ),
-              ),
-              _ => const _TaskList(),
-            },
+            child: taskStatus == .loading || categoryStatus == .loading
+                ? const Center(
+                    child: LdvLoadingSpinner(
+                      loadingHint: 'Aufgaben werden geladen',
+                    ),
+                  )
+                : const _TaskList(),
           ),
         ],
       ),
@@ -287,16 +321,77 @@ class _StatusFilter extends StatelessWidget {
   }
 }
 
+class _CategoryFilter extends StatelessWidget {
+  const _CategoryFilter();
+
+  @override
+  Widget build(BuildContext context) {
+    final categoryFilter = context.select(
+      (TaskCubit cubit) => cubit.state.filter.category,
+    );
+
+    final categories = context.select(
+      (CategoryCubit cubit) => cubit.state.categories,
+    );
+
+    final taskCubit = context.read<TaskCubit>();
+
+    final branch = context.select((BranchCubit cubit) => cubit.state);
+
+    return _FilterWrap(
+      title: 'Kategorien',
+      items: [
+        _WrapElement(
+          text: 'Alle',
+          onTap: categoryFilter.isNotEmpty ? taskCubit.resetCategory : null,
+          selected: categoryFilter.isEmpty,
+        ),
+        for (final category in categories) ...[
+          _WrapElement(
+            text: category.name,
+            onTap: categoryFilter.contains(category)
+                ? () => taskCubit.removeCategory(value: category)
+                : () => taskCubit.setCategory(value: category),
+            selected: categoryFilter.contains(category),
+          ),
+        ],
+        _WrapElement(
+          text: '+',
+          onTap: () async {
+            await showDialog(
+              context: context,
+              builder: (dialogContext) {
+                return _CategoryDialog(
+                  onCategoryCreate: (name) {
+                    context.read<CategoryCubit>().addCategory(
+                      name: name,
+                      branch: branch ?? .unknown,
+                    );
+                  },
+                );
+              },
+            );
+          },
+          selected: categoryFilter.isEmpty,
+          colorOverride: context.ldvColors.dustyGrayLight,
+        ),
+      ],
+    );
+  }
+}
+
 class _WrapElement {
   const _WrapElement({
     required this.text,
     required this.onTap,
     required this.selected,
+    this.colorOverride,
   });
 
   final String text;
   final VoidCallback? onTap;
   final bool selected;
+  final Color? colorOverride;
 }
 
 class _FilterWrap extends StatelessWidget {
@@ -322,9 +417,11 @@ class _FilterWrap extends StatelessWidget {
                 height: 26,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color: item.selected
-                      ? context.ldvColors.bitterSweet
-                      : context.ldvColors.white,
+                  color:
+                      item.colorOverride ??
+                      (item.selected
+                          ? context.ldvColors.bitterSweet
+                          : context.ldvColors.white),
                   border: Border.all(width: 1),
                   borderRadius: context.ldvUiConstants.roundedBorderRadius,
                 ),
@@ -334,6 +431,105 @@ class _FilterWrap extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _CategoryDialog extends StatefulWidget {
+  const _CategoryDialog({required this.onCategoryCreate});
+
+  final void Function(String) onCategoryCreate;
+
+  @override
+  State<_CategoryDialog> createState() => _CategoryDialogState();
+}
+
+class _CategoryDialogState extends State<_CategoryDialog> {
+  String _name = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 60),
+      child: Container(
+        decoration: context.ldvUiConstants.boxDecorationRounded(),
+        padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
+        width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.ldvUiConstants.mobileSpacing,
+          ),
+          child: Column(
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
+            children: [
+              Center(
+                child: Text(
+                  'Neue Kategorie für ${getIt<BranchCubit>().state?.toL10nString()}',
+                  style: const TextStyle(fontWeight: .bold),
+                ),
+              ),
+              SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+              const Text(
+                'Name der neuen Kategorie',
+                textAlign: TextAlign.start,
+              ),
+              SizedBox(height: context.ldvUiConstants.mobileSpacingSmall),
+              LdvTextField(
+                label: 'Name',
+                showEditIcon: false,
+                showLabel: false,
+                onChanged: (value) {
+                  _name = value;
+                },
+              ),
+              SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+              Row(
+                children: [
+                  Flexible(
+                    child: SizedBox(
+                      height: 30,
+                      child: Material(
+                        borderRadius:
+                            context.ldvUiConstants.roundedBorderRadius,
+                        color: Colors.transparent,
+                        clipBehavior: Clip.hardEdge,
+                        shadowColor: Colors.transparent,
+                        child: LdvRoundedButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Center(child: Text('Abbrechen')),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: context.ldvUiConstants.mobileSpacing),
+                  Flexible(
+                    child: SizedBox(
+                      height: 30,
+                      child: Material(
+                        borderRadius:
+                            context.ldvUiConstants.roundedBorderRadius,
+                        clipBehavior: Clip.hardEdge,
+                        color: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        child: LdvRoundedButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            widget.onCategoryCreate.call(_name);
+                          },
+                          child: const Center(child: Text('Erstellen')),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

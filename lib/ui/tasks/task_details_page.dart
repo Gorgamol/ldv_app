@@ -92,7 +92,10 @@ class _TaskCreateView extends StatelessWidget {
                       Expanded(
                         child: LdvTextField(
                           label: 'Erstellt am',
-                          value: DateFormat('dd. MMMM yyyy').format(createdAt),
+                          value: DateFormat(
+                            'dd. MMMM yyyy',
+                            'de',
+                          ).format(createdAt),
                           textAlign: .center,
                           enabled: false,
                         ),
@@ -103,7 +106,10 @@ class _TaskCreateView extends StatelessWidget {
                       Expanded(
                         child: LdvTextField(
                           label: 'Aktualisiert am',
-                          value: DateFormat('dd. MMMM yyyy').format(updatedAt),
+                          value: DateFormat(
+                            'dd. MMMM yyyy',
+                            'de',
+                          ).format(updatedAt),
                           textAlign: .center,
                           enabled: false,
                         ),
@@ -467,6 +473,8 @@ class LdvTextField extends StatefulWidget {
     this.textAlign = .start,
     this.enabled = true,
     this.onChanged,
+    this.showEditIcon = true,
+    this.showLabel = true,
   });
 
   final String? label;
@@ -475,6 +483,8 @@ class LdvTextField extends StatefulWidget {
   final TextAlign textAlign;
   final bool required;
   final bool enabled;
+  final bool showEditIcon;
+  final bool showLabel;
   final void Function(String)? onChanged;
 
   @override
@@ -508,11 +518,11 @@ class _LdvTextFieldState extends State<LdvTextField> {
       crossAxisAlignment: .start,
       spacing: 2,
       children: [
-        if (widget.label != null) ...[
+        if (widget.label != null && widget.showLabel) ...[
           Row(
             spacing: context.ldvUiConstants.mobileSpacingSmall,
             children: [
-              if (widget.enabled) ...[
+              if (widget.enabled && widget.showEditIcon) ...[
                 const Icon(Icons.edit_outlined, size: 16),
               ],
               Text(

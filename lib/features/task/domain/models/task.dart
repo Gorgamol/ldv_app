@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:ldv_app/features/task/domain/models/category.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
 
@@ -15,5 +16,6 @@ abstract class Task with _$Task {
     @Default('') String author,
     @Default(null) DateTime? createdAt,
     @Default(null) DateTime? updatedAt,
+    @Default([]) List<Category> categories,
   }) = _Task;
 }
