@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:ldv_app/core/injection/injection.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
+import 'package:ldv_app/features/task/adapter/in/category_cubit.dart';
+import 'package:ldv_app/features/task/adapter/in/category_state.dart';
 import 'package:ldv_app/features/task/adapter/in/task_details_cubit.dart';
 import 'package:ldv_app/features/task/adapter/in/task_details_state.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
@@ -22,46 +24,74 @@ class TaskDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        if (taskId != null) {
-          return getIt<TaskDetailsCubit>()..loadTask(id: taskId ?? '');
-        }
+    final branch = context.select((BranchCubit cubit) => cubit.state);
 
-        return getIt<TaskDetailsCubit>()..initNewTask();
-      },
-      child: BlocListener<TaskDetailsCubit, TaskDetailsState>(
-        listener: (context, state) {
-          if (state.status == .failure) {
-            showLdvSnackbar(
-              context: context,
-              message: state.error ?? '',
-              type: .error,
-            );
-          }
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            if (taskId != null) {
+              return getIt<TaskDetailsCubit>()..loadTask(id: taskId ?? '');
+            }
 
-          if (state.status == .success && state.taskUpdated) {
-            showLdvSnackbar(
-              context: context,
-              message: 'Aufgabe wurde aktualisiert.',
-            );
-          }
+            return getIt<TaskDetailsCubit>()..initNewTask();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return getIt<CategoryCubit>()
+              ..loadCategories(branch: branch ?? .unknown);
+          },
+        ),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<TaskDetailsCubit, TaskDetailsState>(
+            listener: (context, state) {
+              if (state.status == .failure) {
+                showLdvSnackbar(
+                  context: context,
+                  message: state.error ?? '',
+                  type: .error,
+                );
+              }
 
-          if (state.status == .success && state.taskCreated) {
-            showLdvSnackbar(
-              context: context,
-              message: 'Aufgabe wurde angelegt.',
-            );
-          }
+              if (state.status == .success && state.taskUpdated) {
+                showLdvSnackbar(
+                  context: context,
+                  message: 'Aufgabe wurde aktualisiert.',
+                );
+              }
 
-          if (state.status == .success && state.taskDeleted) {
-            showLdvSnackbar(
-              context: context,
-              message: 'Aufgabe wurde gelöscht.',
-            );
-            context.go(context.ldvRoutes.tasks);
-          }
-        },
+              if (state.status == .success && state.taskCreated) {
+                showLdvSnackbar(
+                  context: context,
+                  message: 'Aufgabe wurde angelegt.',
+                );
+                context.pop();
+              }
+
+              if (state.status == .success && state.taskDeleted) {
+                showLdvSnackbar(
+                  context: context,
+                  message: 'Aufgabe wurde gelöscht.',
+                );
+                context.pop();
+              }
+            },
+          ),
+          BlocListener<CategoryCubit, CategoryState>(
+            listener: (context, state) {
+              if (state.status == .failure) {
+                showLdvSnackbar(
+                  context: context,
+                  message: state.error ?? '',
+                  type: .error,
+                );
+              }
+            },
+          ),
+        ],
         child: const _TaskCreateView(),
       ),
     );
@@ -73,16 +103,19 @@ class _TaskCreateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.select((TaskDetailsCubit cubit) => cubit.state);
-    final createdAt = state.editedTask?.createdAt ?? state.task.createdAt;
-    final updatedAt = state.editedTask?.createdAt ?? state.task.updatedAt;
+    final taskState = context.select((TaskDetailsCubit cubit) => cubit.state);
+    final categoryState = context.select((CategoryCubit cubit) => cubit.state);
+    final createdAt =
+        taskState.editedTask?.createdAt ?? taskState.task.createdAt;
+    final updatedAt =
+        taskState.editedTask?.createdAt ?? taskState.task.updatedAt;
     final keyboardVisible = MediaQuery.viewInsetsOf(context).bottom > 0;
 
     return LdvScaffoldMobile(
-      title: state.isCreationMode ? 'Aufgabe erstellen' : 'Details',
-      onBack: () => context.go(context.ldvRoutes.tasks),
+      title: taskState.isCreationMode ? 'Aufgabe erstellen' : 'Aufgabe Details',
+      onBack: () => context.pop(),
       showBranchText: false,
-      content: state.status == .loading
+      content: taskState.status == .loading || categoryState.status == .loading
           ? const Center(child: LdvLoadingSpinner(loadingHint: 'Laden...'))
           : SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
@@ -128,20 +161,21 @@ class _TaskCreateView extends StatelessWidget {
                   const _AssignedTo(),
                   SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
                   LdvTextField(
-                    value: state.editedTask?.title ?? state.task.title,
+                    value: taskState.editedTask?.title ?? taskState.task.title,
                     lines: 1,
                     label: 'Titel',
-                    enabled: state.isEditMode,
+                    enabled: taskState.isEditMode,
                     onChanged: (value) =>
                         context.read<TaskDetailsCubit>().setTitle(value: value),
                   ),
                   SizedBox(height: context.ldvUiConstants.mobileSpacing),
                   LdvTextField(
                     value:
-                        state.editedTask?.description ?? state.task.description,
+                        taskState.editedTask?.description ??
+                        taskState.task.description,
                     lines: 5,
                     label: 'Aufgabenbeschreibung',
-                    enabled: state.isEditMode,
+                    enabled: taskState.isEditMode,
                     onChanged: (value) => context
                         .read<TaskDetailsCubit>()
                         .setDescription(value: value),
@@ -161,22 +195,23 @@ class _TaskCreateView extends StatelessWidget {
                               }
                             },
                             initial:
-                                state.editedTask?.priority ??
-                                state.task.priority,
+                                taskState.editedTask?.priority ??
+                                taskState.task.priority,
                             color:
-                                state.editedTask?.priority.toColor() ??
-                                state.task.priority.toColor(),
-                            enabled: state.isEditMode,
+                                taskState.editedTask?.priority.toColor() ??
+                                taskState.task.priority.toColor(),
+                            enabled: taskState.isEditMode,
                             disabledWidget: Row(
                               children: [
                                 Text(
-                                  state.editedTask?.priority
+                                  taskState.editedTask?.priority
                                           .toStringTranslated() ??
-                                      state.task.priority.toStringTranslated(),
+                                      taskState.task.priority
+                                          .toStringTranslated(),
                                 ),
                                 const Spacer(),
-                                state.editedTask?.priority.toIcon() ??
-                                    state.task.priority.toIcon(),
+                                taskState.editedTask?.priority.toIcon() ??
+                                    taskState.task.priority.toIcon(),
                               ],
                             ),
                             entries:
@@ -210,20 +245,22 @@ class _TaskCreateView extends StatelessWidget {
                             }
                           },
                           initial:
-                              state.editedTask?.status ?? state.task.status,
+                              taskState.editedTask?.status ??
+                              taskState.task.status,
                           color:
-                              state.editedTask?.status.toColor() ??
-                              state.task.status.toColor(),
-                          enabled: state.isEditMode,
+                              taskState.editedTask?.status.toColor() ??
+                              taskState.task.status.toColor(),
+                          enabled: taskState.isEditMode,
                           disabledWidget: Row(
                             children: [
                               Text(
-                                state.editedTask?.status.toStringTranslated() ??
-                                    state.task.status.toStringTranslated(),
+                                taskState.editedTask?.status
+                                        .toStringTranslated() ??
+                                    taskState.task.status.toStringTranslated(),
                               ),
                               const Spacer(),
-                              state.editedTask?.status.toIcon() ??
-                                  state.task.status.toIcon(),
+                              taskState.editedTask?.status.toIcon() ??
+                                  taskState.task.status.toIcon(),
                             ],
                           ),
                           entries:
@@ -244,6 +281,8 @@ class _TaskCreateView extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+                  const _CategoryFilter(),
                 ],
               ),
             ),
@@ -298,7 +337,9 @@ class _TaskCreateView extends StatelessWidget {
                             ),
                             if (isCreationMode) ...[const Spacer()],
                             LdvCircleButton(
-                              onTap: state.status == .loading
+                              onTap:
+                                  taskState.status == .loading ||
+                                      categoryState.status == .loading
                                   ? null
                                   : () => isCreationMode
                                         ? context
@@ -635,6 +676,241 @@ class _CreatedBy extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _CategoryFilter extends StatelessWidget {
+  const _CategoryFilter();
+
+  @override
+  Widget build(BuildContext context) {
+    final taskState = context.select((TaskDetailsCubit cubit) => cubit.state);
+
+    final taskCategories = taskState.task.categories;
+
+    final isViewMode = !taskState.isCreationMode && !taskState.isEditMode;
+
+    final categories = context.select(
+      (CategoryCubit cubit) => cubit.state.categories,
+    );
+
+    final branch = context.select((BranchCubit cubit) => cubit.state);
+
+    return _FilterWrap(
+      title: 'Kategorien',
+      showTitle: !isViewMode || taskCategories.isNotEmpty,
+      items: [
+        if (isViewMode) ...[
+          for (final category in taskCategories) ...[
+            _WrapElement(text: category.name, onTap: null, selected: true),
+          ],
+        ],
+        if (!isViewMode) ...[
+          for (final category in categories) ...[
+            _WrapElement(
+              text: category.name,
+              onTap: (taskState.editedTask?.categories ?? []).contains(category)
+                  ? () => context.read<TaskDetailsCubit>().removeCategory(
+                      value: category,
+                    )
+                  : () => context.read<TaskDetailsCubit>().addCatagory(
+                      value: category,
+                    ),
+              selected: (taskState.editedTask?.categories ?? []).contains(
+                category,
+              ),
+            ),
+          ],
+          _WrapElement(
+            text: '+',
+            onTap: () async {
+              await showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return _CategoryDialog(
+                    onCategoryCreate: (name) {
+                      context.read<CategoryCubit>().addCategory(
+                        name: name,
+                        branch: branch ?? .unknown,
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            selected: false,
+            colorOverride: context.ldvColors.dustyGrayLight,
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _WrapElement {
+  const _WrapElement({
+    required this.text,
+    required this.onTap,
+    required this.selected,
+    this.colorOverride,
+  });
+
+  final String text;
+  final VoidCallback? onTap;
+  final bool selected;
+  final Color? colorOverride;
+}
+
+class _FilterWrap extends StatelessWidget {
+  const _FilterWrap({
+    required this.title,
+    required this.items,
+    this.showTitle = true,
+  });
+
+  final String title;
+  final bool showTitle;
+  final List<_WrapElement> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: context.ldvUiConstants.mobileSpacing,
+      children: [
+        if (showTitle) ...[
+          Text('$title:', style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+        Wrap(
+          spacing: context.ldvUiConstants.mobileSpacingSmall,
+          alignment: WrapAlignment.start,
+          children: [
+            for (final item in items) ...[
+              Material(
+                borderRadius: context.ldvUiConstants.roundedBorderRadius,
+                child: InkWell(
+                  onTap: item.onTap,
+                  borderRadius: context.ldvUiConstants.roundedBorderRadius,
+                  child: Ink(
+                    height: 26,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      color:
+                          item.colorOverride ??
+                          (item.selected
+                              ? context.ldvColors.bitterSweet
+                              : context.ldvColors.white),
+                      border: Border.all(width: 1),
+                      borderRadius: context.ldvUiConstants.roundedBorderRadius,
+                    ),
+                    child: Text(item.text),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _CategoryDialog extends StatefulWidget {
+  const _CategoryDialog({required this.onCategoryCreate});
+
+  final void Function(String) onCategoryCreate;
+
+  @override
+  State<_CategoryDialog> createState() => _CategoryDialogState();
+}
+
+class _CategoryDialogState extends State<_CategoryDialog> {
+  String _name = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 60),
+      child: Container(
+        decoration: context.ldvUiConstants.boxDecorationRounded(),
+        padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
+        width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: context.ldvUiConstants.mobileSpacing,
+          ),
+          child: Column(
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
+            children: [
+              Center(
+                child: Text(
+                  'Neue Kategorie für ${getIt<BranchCubit>().state?.toL10nString()}',
+                  style: const TextStyle(fontWeight: .bold),
+                ),
+              ),
+              SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+              const Text(
+                'Name der neuen Kategorie',
+                textAlign: TextAlign.start,
+              ),
+              SizedBox(height: context.ldvUiConstants.mobileSpacingSmall),
+              LdvTextField(
+                label: 'Name',
+                showEditIcon: false,
+                showLabel: false,
+                onChanged: (value) {
+                  _name = value;
+                },
+              ),
+              SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
+              Row(
+                children: [
+                  Flexible(
+                    child: SizedBox(
+                      height: 30,
+                      child: Material(
+                        borderRadius:
+                            context.ldvUiConstants.roundedBorderRadius,
+                        color: Colors.transparent,
+                        clipBehavior: Clip.hardEdge,
+                        shadowColor: Colors.transparent,
+                        child: LdvRoundedButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Center(child: Text('Abbrechen')),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: context.ldvUiConstants.mobileSpacing),
+                  Flexible(
+                    child: SizedBox(
+                      height: 30,
+                      child: Material(
+                        borderRadius:
+                            context.ldvUiConstants.roundedBorderRadius,
+                        clipBehavior: Clip.hardEdge,
+                        color: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        child: LdvRoundedButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            widget.onCategoryCreate.call(_name);
+                          },
+                          child: const Center(child: Text('Erstellen')),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

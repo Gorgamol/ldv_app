@@ -51,16 +51,15 @@ class _LdvHttpClient implements LdvHttpClient {
   }
 
   @override
-  Future<TaskDto> createTask({
+  Future<void> createTask({
     required Branch branch,
-    required TaskDto task,
-    required List<int> categories,
+    required String body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'branch': branch};
     final _headers = <String, dynamic>{};
-    final _data = task;
-    final _options = _setStreamType<TaskDto>(
+    final _data = body;
+    final _options = _setStreamType<void>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -70,15 +69,7 @@ class _LdvHttpClient implements LdvHttpClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, Object?>>(_options);
-    late TaskDto _value;
-    try {
-      _value = TaskDto.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -109,15 +100,11 @@ class _LdvHttpClient implements LdvHttpClient {
   }
 
   @override
-  Future<void> updateTask({
-    required String id,
-    required TaskDto task,
-    required List<int> categories,
-  }) async {
+  Future<void> updateTask({required String id, required String body}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = task;
+    final _data = body;
     final _options = _setStreamType<void>(
       Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
@@ -180,14 +167,11 @@ class _LdvHttpClient implements LdvHttpClient {
   }
 
   @override
-  Future<List<CategoryDto>> createCategory({
-    required Map<String, dynamic> body,
-  }) async {
+  Future<List<CategoryDto>> createCategory({required String body}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = body;
     final _options = _setStreamType<List<CategoryDto>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(

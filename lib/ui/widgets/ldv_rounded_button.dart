@@ -9,6 +9,7 @@ class LdvRoundedButton extends StatelessWidget {
     this.height = double.infinity,
     this.width = double.infinity,
     this.color = Colors.white,
+    this.borderRadius,
   });
 
   final VoidCallback onTap;
@@ -16,6 +17,7 @@ class LdvRoundedButton extends StatelessWidget {
   final double height;
   final double width;
   final Color color;
+  final BorderRadiusGeometry? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class LdvRoundedButton extends StatelessWidget {
       width: width,
       decoration: context.ldvUiConstants.boxDecorationRounded().copyWith(
         color: color,
+        borderRadius: borderRadius,
       ),
       child: InkWell(
         onTap: onTap,

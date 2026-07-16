@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryDto {
 
-@JsonKey(name: 'id') int get id;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(name: 'name') String get name;@JsonKey(name: 'branch') String get branch;
+@JsonKey(name: 'id') int get id;@JsonKey(name: 'name') String get name;@JsonKey(name: 'branch') String get branch;
 /// Create a copy of CategoryDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CategoryDtoCopyWith<CategoryDto> get copyWith => _$CategoryDtoCopyWithImpl<Cate
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryDto&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.name, name) || other.name == name)&&(identical(other.branch, branch) || other.branch == branch));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.branch, branch) || other.branch == branch));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,name,branch);
+int get hashCode => Object.hash(runtimeType,id,name,branch);
 
 @override
 String toString() {
-  return 'CategoryDto(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, name: $name, branch: $branch)';
+  return 'CategoryDto(id: $id, name: $name, branch: $branch)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CategoryDtoCopyWith<$Res>  {
   factory $CategoryDtoCopyWith(CategoryDto value, $Res Function(CategoryDto) _then) = _$CategoryDtoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int id,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'name') String name,@JsonKey(name: 'branch') String branch
+@JsonKey(name: 'id') int id,@JsonKey(name: 'name') String name,@JsonKey(name: 'branch') String branch
 });
 
 
@@ -65,12 +65,10 @@ class _$CategoryDtoCopyWithImpl<$Res>
 
 /// Create a copy of CategoryDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? name = null,Object? branch = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? branch = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,branch: null == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -157,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'name')  String name, @JsonKey(name: 'branch')  String branch)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'name')  String name, @JsonKey(name: 'branch')  String branch)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CategoryDto() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.branch);case _:
+return $default(_that.id,_that.name,_that.branch);case _:
   return orElse();
 
 }
@@ -178,10 +176,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.branch
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'name')  String name, @JsonKey(name: 'branch')  String branch)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'name')  String name, @JsonKey(name: 'branch')  String branch)  $default,) {final _that = this;
 switch (_that) {
 case _CategoryDto():
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.branch);case _:
+return $default(_that.id,_that.name,_that.branch);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +196,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.branch
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(name: 'name')  String name, @JsonKey(name: 'branch')  String branch)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'name')  String name, @JsonKey(name: 'branch')  String branch)?  $default,) {final _that = this;
 switch (_that) {
 case _CategoryDto() when $default != null:
-return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.branch);case _:
+return $default(_that.id,_that.name,_that.branch);case _:
   return null;
 
 }
@@ -213,12 +211,10 @@ return $default(_that.id,_that.createdAt,_that.updatedAt,_that.name,_that.branch
 @JsonSerializable()
 
 class _CategoryDto implements CategoryDto {
-  const _CategoryDto({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(name: 'name') required this.name, @JsonKey(name: 'branch') required this.branch});
+  const _CategoryDto({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'name') required this.name, @JsonKey(name: 'branch') required this.branch});
   factory _CategoryDto.fromJson(Map<String, dynamic> json) => _$CategoryDtoFromJson(json);
 
 @override@JsonKey(name: 'id') final  int id;
-@override@JsonKey(name: 'created_at') final  DateTime createdAt;
-@override@JsonKey(name: 'updated_at') final  DateTime updatedAt;
 @override@JsonKey(name: 'name') final  String name;
 @override@JsonKey(name: 'branch') final  String branch;
 
@@ -235,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryDto&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.name, name) || other.name == name)&&(identical(other.branch, branch) || other.branch == branch));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.branch, branch) || other.branch == branch));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,updatedAt,name,branch);
+int get hashCode => Object.hash(runtimeType,id,name,branch);
 
 @override
 String toString() {
-  return 'CategoryDto(id: $id, createdAt: $createdAt, updatedAt: $updatedAt, name: $name, branch: $branch)';
+  return 'CategoryDto(id: $id, name: $name, branch: $branch)';
 }
 
 
@@ -255,7 +251,7 @@ abstract mixin class _$CategoryDtoCopyWith<$Res> implements $CategoryDtoCopyWith
   factory _$CategoryDtoCopyWith(_CategoryDto value, $Res Function(_CategoryDto) _then) = __$CategoryDtoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int id,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(name: 'name') String name,@JsonKey(name: 'branch') String branch
+@JsonKey(name: 'id') int id,@JsonKey(name: 'name') String name,@JsonKey(name: 'branch') String branch
 });
 
 
@@ -272,12 +268,10 @@ class __$CategoryDtoCopyWithImpl<$Res>
 
 /// Create a copy of CategoryDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? updatedAt = null,Object? name = null,Object? branch = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? branch = null,}) {
   return _then(_CategoryDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,branch: null == branch ? _self.branch : branch // ignore: cast_nullable_to_non_nullable
 as String,
   ));

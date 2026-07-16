@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/injection/injection.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
-import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/task/adapter/in/category_cubit.dart';
 import 'package:ldv_app/features/task/adapter/in/category_state.dart';
 import 'package:ldv_app/features/task/adapter/in/task_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:ldv_app/features/task/adapter/in/task_state.dart';
 import 'package:ldv_app/features/task/domain/models/task.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
-import 'package:ldv_app/ui/tasks/task_details_page.dart';
 import 'package:ldv_app/ui/widgets/bottom_navigation_bar_mobile.dart';
 import 'package:ldv_app/ui/widgets/ldv_circle_button.dart';
 import 'package:ldv_app/ui/widgets/ldv_loading_spinner.dart';
@@ -85,17 +83,24 @@ class _TaskOverviewContent extends StatelessWidget {
 
     return LdvScaffoldMobile(
       title: context.translate.tasks,
-      onBack: () => context.go(context.ldvRoutes.dashboard),
+      onBack: () => context.pop(),
       content: Column(
         crossAxisAlignment: .start,
         children: [
-          const _SearchBar(),
+          Row(
+            spacing: context.ldvUiConstants.mobileSpacingSmall,
+            children: const [
+              _SortButton(),
+              Expanded(child: _SearchBar()),
+              //_FilterButton(),
+            ],
+          ),
           SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
           const _StatusFilter(),
           SizedBox(height: context.ldvUiConstants.mobileSpacing),
           const _PriorityFilter(),
-          //SizedBox(height: context.ldvUiConstants.mobileSpacing),
-          //const _CategoryFilter(),
+          SizedBox(height: context.ldvUiConstants.mobileSpacing),
+          const _CategoryFilter(),
           SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
           Expanded(
             child: taskStatus == .loading || categoryStatus == .loading
@@ -111,10 +116,322 @@ class _TaskOverviewContent extends StatelessWidget {
       bottomNavigationBar: const BottomNavigationBarMobile(),
       floatingActionButton: LdvCircleButton(
         onTap: () {
-          context.go('/tasks/details');
+          context.push('/tasks/details');
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class _SortButton extends StatefulWidget {
+  const _SortButton();
+
+  @override
+  State<_SortButton> createState() => _SortButtonState();
+}
+
+class _SortButtonState extends State<_SortButton> {
+  final _key = LabeledGlobalKey("sort_button");
+  OverlayEntry? _overlayEntry;
+  bool _isMenuOpen = false;
+
+  @override
+  void dispose() {
+    _hideOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LdvCircleButton(
+      key: _key,
+      onTap: () {
+        if (_isMenuOpen) {
+          _hideOverlay();
+        } else {
+          _showOverlay();
+        }
+      },
+      child: const Icon(Icons.sort),
+    );
+  }
+
+  void _showOverlay() {
+    final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
+    final overlay = _overlayEntryBuilder(
+      buttonPosition: renderBox.localToGlobal(Offset.zero),
+      buttonSize: renderBox.size,
+    );
+
+    Overlay.of(context).insert(overlay);
+    _isMenuOpen = true;
+    _overlayEntry = overlay;
+  }
+
+  void _hideOverlay() {
+    _overlayEntry?.remove();
+    _isMenuOpen = false;
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _overlayEntryBuilder({
+    required Offset buttonPosition,
+    required Size buttonSize,
+  }) {
+    final taskCubit = context.read<TaskCubit>();
+    return OverlayEntry(
+      builder: (context) {
+        return Stack(
+          children: [
+            GestureDetector(
+              onTap: _hideOverlay,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.transparent,
+              ),
+            ),
+            Positioned(
+              top:
+                  buttonPosition.dy +
+                  buttonSize.height +
+                  context.ldvUiConstants.mobileSpacingSmall,
+              left: buttonPosition.dx,
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: 130,
+                  decoration: context.ldvUiConstants
+                      .boxDecorationRounded()
+                      .copyWith(borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(
+                          context.ldvUiConstants.mobileSpacing,
+                        ),
+                        child: const Text(
+                          'Sortieren nach',
+                          style: TextStyle(fontWeight: .bold),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            taskCubit.setSort(value: .date);
+                            _hideOverlay();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: context.ldvUiConstants.mobileSpacing,
+                              top: context.ldvUiConstants.mobileSpacingSmall,
+                              bottom: context.ldvUiConstants.mobileSpacingSmall,
+                            ),
+                            child: Row(
+                              spacing:
+                                  context.ldvUiConstants.mobileSpacingSmall,
+                              children: const [
+                                Icon(Icons.calendar_month_outlined, size: 24),
+                                Text('Datum'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            taskCubit.setSort(value: .name);
+                            _hideOverlay();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: context.ldvUiConstants.mobileSpacing,
+                              top: context.ldvUiConstants.mobileSpacingSmall,
+                              bottom: context.ldvUiConstants.mobileSpacingSmall,
+                            ),
+                            child: Row(
+                              spacing:
+                                  context.ldvUiConstants.mobileSpacingSmall,
+                              children: const [
+                                Icon(Icons.abc, size: 24),
+                                Text('Titel'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: context.ldvUiConstants.mobileSpacingSmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _FilterButton extends StatefulWidget {
+  const _FilterButton();
+
+  @override
+  State<_FilterButton> createState() => _FilterButtonState();
+}
+
+class _FilterButtonState extends State<_FilterButton> {
+  final _key = LabeledGlobalKey("filter_button");
+  OverlayEntry? _overlayEntry;
+  bool _isMenuOpen = false;
+
+  @override
+  void dispose() {
+    _hideOverlay();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LdvCircleButton(
+      key: _key,
+      onTap: () {
+        if (_isMenuOpen) {
+          _hideOverlay();
+        } else {
+          _showOverlay();
+        }
+      },
+      child: const Icon(Icons.sort),
+    );
+  }
+
+  void _showOverlay() {
+    final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
+    final overlay = _overlayEntryBuilder(
+      buttonPosition: renderBox.localToGlobal(Offset.zero),
+      buttonSize: renderBox.size,
+    );
+
+    Overlay.of(context).insert(overlay);
+    _isMenuOpen = true;
+    _overlayEntry = overlay;
+  }
+
+  void _hideOverlay() {
+    _overlayEntry?.remove();
+    _isMenuOpen = false;
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _overlayEntryBuilder({
+    required Offset buttonPosition,
+    required Size buttonSize,
+  }) {
+    final taskCubit = context.read<TaskCubit>();
+    return OverlayEntry(
+      builder: (context) {
+        return Stack(
+          children: [
+            GestureDetector(
+              onTap: _hideOverlay,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.transparent,
+              ),
+            ),
+            Positioned(
+              top:
+                  buttonPosition.dy +
+                  buttonSize.height +
+                  context.ldvUiConstants.mobileSpacingSmall,
+              right: context.ldvUiConstants.mobileSpacing,
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: 250,
+                  decoration: context.ldvUiConstants
+                      .boxDecorationRounded()
+                      .copyWith(borderRadius: BorderRadius.circular(5)),
+                  child: Column(
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(
+                          context.ldvUiConstants.mobileSpacing,
+                        ),
+                        child: const Text(
+                          'Filtern nach',
+                          style: TextStyle(fontWeight: .bold),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            taskCubit.setSort(value: .date);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: context.ldvUiConstants.mobileSpacing,
+                              top: context.ldvUiConstants.mobileSpacingSmall,
+                              bottom: context.ldvUiConstants.mobileSpacingSmall,
+                            ),
+                            child: Row(
+                              spacing:
+                                  context.ldvUiConstants.mobileSpacingSmall,
+                              children: const [
+                                Icon(Icons.calendar_month_outlined, size: 24),
+                                Text('Datum'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            taskCubit.setSort(value: .name);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: context.ldvUiConstants.mobileSpacing,
+                              top: context.ldvUiConstants.mobileSpacingSmall,
+                              bottom: context.ldvUiConstants.mobileSpacingSmall,
+                            ),
+                            child: Row(
+                              spacing:
+                                  context.ldvUiConstants.mobileSpacingSmall,
+                              children: const [
+                                Icon(Icons.abc, size: 24),
+                                Text('Titel'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: context.ldvUiConstants.mobileSpacingSmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -137,7 +454,7 @@ class _TaskList extends StatelessWidget {
                 LdvRoundedButton(
                   height: 45,
                   onTap: () {
-                    context.go('/tasks/details', extra: task.id);
+                    context.push('/tasks/details', extra: task.id);
                   },
                   color: _getCardColor(task: task),
                   child: Stack(
@@ -336,8 +653,6 @@ class _CategoryFilter extends StatelessWidget {
 
     final taskCubit = context.read<TaskCubit>();
 
-    final branch = context.select((BranchCubit cubit) => cubit.state);
-
     return _FilterWrap(
       title: 'Kategorien',
       items: [
@@ -355,26 +670,6 @@ class _CategoryFilter extends StatelessWidget {
             selected: categoryFilter.contains(category),
           ),
         ],
-        _WrapElement(
-          text: '+',
-          onTap: () async {
-            await showDialog(
-              context: context,
-              builder: (dialogContext) {
-                return _CategoryDialog(
-                  onCategoryCreate: (name) {
-                    context.read<CategoryCubit>().addCategory(
-                      name: name,
-                      branch: branch ?? .unknown,
-                    );
-                  },
-                );
-              },
-            );
-          },
-          selected: categoryFilter.isEmpty,
-          colorOverride: context.ldvColors.dustyGrayLight,
-        ),
       ],
     );
   }
@@ -385,13 +680,11 @@ class _WrapElement {
     required this.text,
     required this.onTap,
     required this.selected,
-    this.colorOverride,
   });
 
   final String text;
   final VoidCallback? onTap;
   final bool selected;
-  final Color? colorOverride;
 }
 
 class _FilterWrap extends StatelessWidget {
@@ -417,11 +710,9 @@ class _FilterWrap extends StatelessWidget {
                 height: 26,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  color:
-                      item.colorOverride ??
-                      (item.selected
-                          ? context.ldvColors.bitterSweet
-                          : context.ldvColors.white),
+                  color: item.selected
+                      ? context.ldvColors.bitterSweet
+                      : context.ldvColors.white,
                   border: Border.all(width: 1),
                   borderRadius: context.ldvUiConstants.roundedBorderRadius,
                 ),
@@ -431,105 +722,6 @@ class _FilterWrap extends StatelessWidget {
           ),
         ],
       ],
-    );
-  }
-}
-
-class _CategoryDialog extends StatefulWidget {
-  const _CategoryDialog({required this.onCategoryCreate});
-
-  final void Function(String) onCategoryCreate;
-
-  @override
-  State<_CategoryDialog> createState() => _CategoryDialogState();
-}
-
-class _CategoryDialogState extends State<_CategoryDialog> {
-  String _name = '';
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 60),
-      child: Container(
-        decoration: context.ldvUiConstants.boxDecorationRounded(),
-        padding: EdgeInsets.all(context.ldvUiConstants.mobileSpacing),
-        width: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: context.ldvUiConstants.mobileSpacing,
-          ),
-          child: Column(
-            mainAxisSize: .min,
-            crossAxisAlignment: .start,
-            children: [
-              Center(
-                child: Text(
-                  'Neue Kategorie für ${getIt<BranchCubit>().state?.toL10nString()}',
-                  style: const TextStyle(fontWeight: .bold),
-                ),
-              ),
-              SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
-              const Text(
-                'Name der neuen Kategorie',
-                textAlign: TextAlign.start,
-              ),
-              SizedBox(height: context.ldvUiConstants.mobileSpacingSmall),
-              LdvTextField(
-                label: 'Name',
-                showEditIcon: false,
-                showLabel: false,
-                onChanged: (value) {
-                  _name = value;
-                },
-              ),
-              SizedBox(height: context.ldvUiConstants.mobileSpacingBig),
-              Row(
-                children: [
-                  Flexible(
-                    child: SizedBox(
-                      height: 30,
-                      child: Material(
-                        borderRadius:
-                            context.ldvUiConstants.roundedBorderRadius,
-                        color: Colors.transparent,
-                        clipBehavior: Clip.hardEdge,
-                        shadowColor: Colors.transparent,
-                        child: LdvRoundedButton(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Center(child: Text('Abbrechen')),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: context.ldvUiConstants.mobileSpacing),
-                  Flexible(
-                    child: SizedBox(
-                      height: 30,
-                      child: Material(
-                        borderRadius:
-                            context.ldvUiConstants.roundedBorderRadius,
-                        clipBehavior: Clip.hardEdge,
-                        color: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        child: LdvRoundedButton(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            widget.onCategoryCreate.call(_name);
-                          },
-                          child: const Center(child: Text('Erstellen')),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

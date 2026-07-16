@@ -84,6 +84,10 @@ class _SideBar extends StatelessWidget {
               'assets/images/logo_theater.png',
               height: 60,
             ),
+            Branch.baking => Image.asset(
+              'assets/images/logo_baking.png',
+              height: 60,
+            ),
             _ => const SizedBox.shrink(),
           },
         ),
@@ -127,14 +131,14 @@ class _SideBar extends StatelessWidget {
         icon: const Icon(Icons.list_alt_outlined),
         active: currentRoute == '/tasks',
         onTap: () {
-          context.go('/tasks');
+          context.replace('/tasks');
         },
       ),
       SideBarItem(
         icon: const Icon(Icons.book_outlined),
         active: currentRoute == '/maintenance',
         onTap: () {
-          context.go('/maintenance');
+          context.replace('/maintenance');
         },
       ),
       SideBarItem(
@@ -154,14 +158,14 @@ class _SideBar extends StatelessWidget {
         icon: const Icon(Icons.list_alt_outlined),
         active: currentRoute == '/tasks',
         onTap: () {
-          context.go('/tasks');
+          context.replace('/tasks');
         },
       ),
       SideBarItem(
         icon: const Icon(Icons.book_outlined),
         active: currentRoute == '/maintenance',
         onTap: () {
-          context.go('/maintenance');
+          context.replace('/maintenance');
         },
       ),
     ];
@@ -176,7 +180,7 @@ class _SideBar extends StatelessWidget {
         icon: const Icon(Icons.list_alt_outlined),
         active: currentRoute == '/tasks',
         onTap: () {
-          context.go('/tasks');
+          context.replace('/tasks');
         },
       ),
     ];
@@ -210,7 +214,7 @@ class _Content extends StatelessWidget {
                   child: InkWell(
                     borderRadius: context.ldvUiConstants.roundedBorderRadius,
                     onTap: () {
-                      context.go('/');
+                      context.replace('/');
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ldv_app/features/appointment/domain/models/appointment.dart';
+import 'package:ldv_app/ui/appointment/appointment_details_page.dart';
 import 'package:ldv_app/ui/dashboard/dashboard_page.dart';
 import 'package:ldv_app/ui/maintenance/maintenance_page.dart';
 import 'package:ldv_app/ui/splash/splash_page.dart';
 import 'package:ldv_app/ui/tasks/task_details_page.dart';
 import 'package:ldv_app/ui/tasks/task_overview_page.dart';
-import 'package:ldv_app/ui/weddings/weddings_page.dart';
+import 'package:ldv_app/ui/appointment/appointments_overview_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -47,9 +49,19 @@ final ldvAppRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/weddings',
+      path: '/appointments',
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: WeddingsPage());
+        return const NoTransitionPage(child: AppointmentsOverviewPage());
+      },
+    ),
+    GoRoute(
+      path: '/appointments/details',
+      pageBuilder: (context, state) {
+        return NoTransitionPage(
+          child: AppointmentDetailsPage(
+            appointment: state.extra as Appointment?,
+          ),
+        );
       },
     ),
   ],

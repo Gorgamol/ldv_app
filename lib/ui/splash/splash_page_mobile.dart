@@ -32,7 +32,7 @@ class _SplashPageMobileState extends State<SplashPageMobile>
       setState(() {});
 
       if (_progressAnimation.isCompleted) {
-        context.go(context.ldvRoutes.dashboard);
+        context.replace(context.ldvRoutes.dashboard);
       }
     });
 

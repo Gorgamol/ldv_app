@@ -32,7 +32,7 @@ class _SplashPageDesktopState extends State<SplashPageDesktop>
       setState(() {});
 
       if (_progressAnimation.isCompleted) {
-        context.go('/tasks');
+        context.push('/tasks');
       }
     });
 

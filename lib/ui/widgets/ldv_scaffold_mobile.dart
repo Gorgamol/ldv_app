@@ -80,7 +80,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
                       padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
-                          const Icon(Icons.chevron_left),
+                          const Icon(Icons.chevron_left, size: 32),
                           Expanded(
                             child: Text(
                               showBranchText
@@ -113,7 +113,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
                   'assets/images/logo_theater.png',
                   height: 42,
                 ),
-                _ => const SizedBox.shrink(),
+                Branch.baking => Image.asset(
+                  'assets/images/logo_baking.png',
+                  height: 42,
+                ),
+                _ => Image.asset('assets/images/logo_ldv.png', height: 42),
               },
             ],
           );

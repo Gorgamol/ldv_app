@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ldv_app/core/utils/build_context_extensions.dart';
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart';
-import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/shared/models/side_bar_item.dart';
 
 class BottomNavigationBarMobile extends StatelessWidget {
@@ -15,18 +14,13 @@ class BottomNavigationBarMobile extends StatelessWidget {
     final currentRoute = GoRouter.of(context).state.path ?? '';
 
     final bottomBarItems = switch (branch) {
-      Branch.park => _getParkItems(
+      .park => _getParkItems(context: context, currentRoute: currentRoute),
+      .mill => _getMillItems(context: context, currentRoute: currentRoute),
+      .theater => _getTheaterItems(
         context: context,
         currentRoute: currentRoute,
       ),
-      Branch.mill => _getMillItems(
-        context: context,
-        currentRoute: currentRoute,
-      ),
-      Branch.theater => _getTheaterItems(
-        context: context,
-        currentRoute: currentRoute,
-      ),
+      .baking => _getBakingItems(context: context, currentRoute: currentRoute),
       _ => <SideBarItem>[],
     };
 
@@ -111,11 +105,11 @@ class BottomNavigationBarMobile extends StatelessWidget {
       ),
       SideBarItem(
         icon: const Icon(Icons.calendar_month),
-        active: currentRoute == '/weddings',
+        active: currentRoute == '/appointments',
         onTap: () {
-          context.replace('/weddings');
+          context.replace('/appointments');
         },
-        title: 'Kalender',
+        title: 'Termine',
       ),
     ];
   }
@@ -143,11 +137,11 @@ class BottomNavigationBarMobile extends StatelessWidget {
       ),
       SideBarItem(
         icon: const Icon(Icons.calendar_month),
-        active: currentRoute == '/weddings',
+        active: currentRoute == '/appointments',
         onTap: () {
-          context.replace('/weddings');
+          context.replace('/appointments');
         },
-        title: 'Kalender',
+        title: 'Termine',
       ),
     ];
   }
@@ -167,11 +161,43 @@ class BottomNavigationBarMobile extends StatelessWidget {
       ),
       SideBarItem(
         icon: const Icon(Icons.calendar_month),
-        active: currentRoute == '/weddings',
+        active: currentRoute == '/appointments',
         onTap: () {
-          context.replace('/weddings');
+          context.replace('/appointments');
         },
-        title: 'Kalender',
+        title: 'Termine',
+      ),
+    ];
+  }
+
+  List<SideBarItem> _getBakingItems({
+    required BuildContext context,
+    required String currentRoute,
+  }) {
+    return [
+      SideBarItem(
+        icon: const Icon(Icons.list_alt_outlined),
+        active: currentRoute == '/tasks',
+        onTap: () {
+          context.replace('/tasks');
+        },
+        title: context.translate.tasks,
+      ),
+      SideBarItem(
+        icon: const Icon(Icons.book_outlined),
+        active: currentRoute == '/maintenance',
+        onTap: () {
+          context.replace('/maintenance');
+        },
+        title: context.translate.maintenance,
+      ),
+      SideBarItem(
+        icon: const Icon(Icons.calendar_month),
+        active: currentRoute == '/appointments',
+        onTap: () {
+          context.replace('/appointments');
+        },
+        title: 'Termine',
       ),
     ];
   }

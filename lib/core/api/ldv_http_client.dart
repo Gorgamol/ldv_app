@@ -22,10 +22,9 @@ abstract class LdvHttpClient {
   });
 
   @POST('/tasks')
-  Future<TaskDto> createTask({
+  Future<void> createTask({
     @Query('branch') required Branch branch,
-    @Body() required TaskDto task,
-    @Body() required List<int> categories,
+    @Body() required String body,
   });
 
   @GET('/tasks/{id}')
@@ -34,8 +33,7 @@ abstract class LdvHttpClient {
   @PATCH('/tasks/{id}')
   Future<void> updateTask({
     @Path() required String id,
-    @Body() required TaskDto task,
-    @Body() required List<int> categories,
+    @Body() required String body,
   });
 
   @DELETE('/tasks/{id}')
@@ -47,9 +45,7 @@ abstract class LdvHttpClient {
   });
 
   @POST('/categories')
-  Future<List<CategoryDto>> createCategory({
-    @Body() required Map<String, dynamic> body,
-  });
+  Future<List<CategoryDto>> createCategory({@Body() required String body});
 }
 
 @module

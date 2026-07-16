@@ -12,8 +12,8 @@ class LoadAllTasksUseCase {
   Future<List<Task>> call({required Branch branch}) async {
     final tasks = await _taskRepository.fetchAllTasks(branch: branch);
     tasks.sort(
-      (a, b) => (b.updatedAt ?? DateTime.now()).compareTo(
-        a.updatedAt ?? DateTime.now(),
+      (a, b) => (b.createdAt ?? DateTime.now()).compareTo(
+        a.createdAt ?? DateTime.now(),
       ),
     );
     return tasks;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:injectable/injectable.dart';
 import 'package:ldv_app/core/api/dtos/category_dto.dart';
 import 'package:ldv_app/core/api/dtos/task_dto.dart';
@@ -28,22 +30,36 @@ class TaskHttpAdapter implements TaskRepository {
   }
 
   @override
-  Future<Task> createTask({required Task task, required Branch branch}) async {
-    final taskDto = await _client.createTask(
+  Future<void> createTask({required Task task, required Branch branch}) async {
+    await _client.createTask(
       branch: branch,
-      task: task.toDto(branch: branch),
-      categories: [],
+      body: jsonEncode({
+        'title': task.title,
+        'description': task.description,
+        'author': task.author,
+        'priority': task.priority.toString(),
+        'status': task.status.toString(),
+        'category_ids': task.categories
+            .map((category) => int.parse(category.id))
+            .toList(),
+      }),
     );
-
-    return taskDto.toDomain();
   }
 
   @override
   Future<void> updateTask({required Task task}) async {
     await _client.updateTask(
       id: task.id,
-      task: task.toDto(branch: .unknown),
-      categories: [],
+      body: jsonEncode({
+        'title': task.title,
+        'description': task.description,
+        'author': task.author,
+        'priority': task.priority.toString(),
+        'status': task.status.toString(),
+        'category_ids': task.categories
+            .map((category) => int.parse(category.id))
+            .toList(),
+      }),
     );
   }
 
@@ -64,11 +80,7 @@ extension _TaskDtoExtension on TaskDto {
       author: author,
       priority: priority,
       status: status,
-      categories: [
-        const Category(id: '', name: 'Allgemein'),
-        const Category(id: '', name: 'Garten'),
-      ],
-      //categories: categories.map((dto) => dto.toDomain()).toList(),
+      categories: (categories ?? []).map((dto) => dto.toDomain()).toList(),
     );
   }
 }

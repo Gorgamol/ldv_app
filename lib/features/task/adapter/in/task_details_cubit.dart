@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:ldv_app/core/l10n/l10n.dart';
 import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/task/adapter/in/task_details_state.dart';
+import 'package:ldv_app/features/task/domain/models/category.dart';
 import 'package:ldv_app/features/task/domain/models/task.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
@@ -113,11 +114,10 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
       final success = result.success;
       final error = result.error;
 
-      if (success != null) {
+      if (success) {
         emit(
           state.copyWith(
             status: .success,
-            task: success,
             taskCreated: true,
             isEditMode: false,
             isCreationMode: false,
@@ -160,6 +160,26 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
   Future<void> setStatus({required TaskStatus value}) async {
     final editedTask = state.editedTask?.copyWith(status: value);
+
+    if (editedTask != null) {
+      emit(state.copyWith(status: .success, editedTask: editedTask));
+    }
+  }
+
+  Future<void> addCatagory({required Category value}) async {
+    final editedTask = state.editedTask?.copyWith(
+      categories: [...state.editedTask?.categories ?? [], value],
+    );
+
+    if (editedTask != null) {
+      emit(state.copyWith(status: .success, editedTask: editedTask));
+    }
+  }
+
+  Future<void> removeCategory({required Category value}) async {
+    final editedTask = state.editedTask?.copyWith(
+      categories: [...state.editedTask?.categories ?? []]..remove(value),
+    );
 
     if (editedTask != null) {
       emit(state.copyWith(status: .success, editedTask: editedTask));

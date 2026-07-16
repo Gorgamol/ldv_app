@@ -9,4 +9,8 @@ class BranchCubit extends Cubit<Branch?> {
   void setBranch({required Branch branch}) {
     emit(branch);
   }
+
+  void resetBranch() {
+    emit(null);
+  }
 }

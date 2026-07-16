@@ -11,6 +11,8 @@ class FilterTasksUseCase {
     final searchFilter = filter.search;
     final priorityFilter = filter.priority;
     final statusFilter = filter.status;
+    final categoryFilter = filter.category;
+    final sortBy = filter.sort;
 
     final filteredTasks = List<Task>.from(tasks, growable: true);
 
@@ -42,6 +44,25 @@ class FilterTasksUseCase {
         return !containsTaskStatus;
       });
     }
+
+    if (categoryFilter.isNotEmpty) {
+      filteredTasks.removeWhere((task) {
+        final containsTaskCategory = categoryFilter.any(
+          (category) => task.categories.contains(category),
+        );
+
+        return !containsTaskCategory;
+      });
+    }
+
+    filteredTasks.sort((a, b) {
+      return switch (sortBy) {
+        .date => (b.createdAt ?? DateTime.now()).compareTo(
+          b.createdAt ?? DateTime.now(),
+        ),
+        .name => a.title.compareTo(b.title),
+      };
+    });
 
     return filteredTasks;
   }

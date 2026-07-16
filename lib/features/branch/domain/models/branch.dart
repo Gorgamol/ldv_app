@@ -4,6 +4,7 @@ enum Branch {
   park,
   mill,
   theater,
+  baking,
   unknown;
 
   @override
@@ -11,6 +12,7 @@ enum Branch {
     park => 'park',
     mill => 'mill',
     theater => 'theater',
+    baking => 'baking',
     _ => 'unknown',
   };
 
@@ -18,6 +20,7 @@ enum Branch {
     park => L10n.current.park,
     mill => L10n.current.mill,
     theater => L10n.current.theater,
+    baking => 'Brotbackgruppe',
     _ => L10n.current.unknown,
   };
 
@@ -25,6 +28,7 @@ enum Branch {
     park => 'assets/images/logo_park.png',
     mill => 'assets/images/logo_mill.png',
     theater => 'assets/images/logo_theater.png',
+    baking => 'assets/images/logo_baking.png',
     _ => 'assets/images/logo_ldv.png',
   };
 
@@ -33,6 +37,7 @@ enum Branch {
       'park' => park,
       'mill' => mill,
       'theater' => theater,
+      'baking' => baking,
       _ => unknown,
     };
   }

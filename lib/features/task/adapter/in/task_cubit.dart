@@ -4,6 +4,7 @@ import 'package:ldv_app/core/l10n/l10n.dart';
 import 'package:ldv_app/features/branch/domain/models/branch.dart';
 import 'package:ldv_app/features/task/adapter/in/task_state.dart';
 import 'package:ldv_app/features/task/domain/models/category.dart';
+import 'package:ldv_app/features/task/domain/models/sort_by.dart';
 import 'package:ldv_app/features/task/domain/models/task_priority.dart';
 import 'package:ldv_app/features/task/domain/models/task_status.dart';
 import 'package:ldv_app/features/task/domain/use_cases/filter_tasks_use_case.dart';
@@ -189,6 +190,22 @@ class TaskCubit extends Cubit<TaskState> {
 
   Future<void> resetCategory() async {
     final changedFilter = state.filter.copyWith(category: []);
+    final filteredTasks = _filterTasksUseCase(
+      tasks: state.tasks,
+      filter: changedFilter,
+    );
+
+    emit(
+      state.copyWith(
+        status: .success,
+        filteredTasks: filteredTasks,
+        filter: changedFilter,
+      ),
+    );
+  }
+
+  Future<void> setSort({required SortBy value}) async {
+    final changedFilter = state.filter.copyWith(sort: value);
     final filteredTasks = _filterTasksUseCase(
       tasks: state.tasks,
       filter: changedFilter,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:injectable/injectable.dart';
 import 'package:ldv_app/core/api/dtos/category_dto.dart';
 import 'package:ldv_app/core/api/ldv_http_client.dart';
@@ -24,7 +26,7 @@ class CategoryHttpAdapter implements CategoryRepository {
     required Branch branch,
   }) async {
     final categoryDtos = await _client.createCategory(
-      body: {'name': name, 'branch': branch},
+      body: jsonEncode({'name': name, 'branch': branch.toString()}),
     );
 
     return categoryDtos.map((dto) => dto.toDomain()).toList();

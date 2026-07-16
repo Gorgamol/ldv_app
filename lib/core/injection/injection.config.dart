@@ -12,6 +12,15 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:ldv_app/core/api/ldv_http_client.dart' as _i755;
+import 'package:ldv_app/features/appointment/adapter/in/appointment_cubit.dart'
+    as _i107;
+import 'package:ldv_app/features/appointment/adapter/out/appointment_http_adapter.dart'
+    as _i614;
+import 'package:ldv_app/features/appointment/di.dart' as _i647;
+import 'package:ldv_app/features/appointment/domain/interfaces/fetch_appointments_port.dart'
+    as _i680;
+import 'package:ldv_app/features/appointment/domain/use_cases/load_appointments_use_case.dart'
+    as _i101;
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart' as _i999;
 import 'package:ldv_app/features/task/adapter/in/category_cubit.dart' as _i1072;
 import 'package:ldv_app/features/task/adapter/in/task_cubit.dart' as _i1040;
@@ -51,10 +60,18 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final ldvHttpClientModule = _$LdvHttpClientModule();
+    final appointmentDependencyInjectionModule =
+        _$AppointmentDependencyInjectionModule();
     final taskDependencyInjectionModule = _$TaskDependencyInjectionModule();
     final categoryDependencyInjectionModule =
         _$CategoryDependencyInjectionModule();
     gh.factory<_i755.LdvHttpClient>(() => ldvHttpClientModule.getHttpClient());
+    gh.factory<_i614.AppointmentHttpAdapter>(
+      () => const _i614.AppointmentHttpAdapter(),
+    );
+    gh.factory<_i680.FetchAppointmentsPort>(
+      () => appointmentDependencyInjectionModule.fetchAppointmentsPort,
+    );
     gh.factory<_i555.TaskRepository>(
       () => taskDependencyInjectionModule.taskRepository,
     );
@@ -76,6 +93,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i915.TaskHttpAdapter>(
       () => _i915.TaskHttpAdapter(gh<_i755.LdvHttpClient>()),
+    );
+    gh.factory<_i101.LoadAppointmentsUseCase>(
+      () => _i101.LoadAppointmentsUseCase(gh<_i680.FetchAppointmentsPort>()),
     );
     gh.factory<_i1072.CategoryCubit>(
       () => _i1072.CategoryCubit(
@@ -112,11 +132,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i232.DeleteTaskUseCase>(),
       ),
     );
+    gh.factory<_i107.AppointmentCubit>(
+      () => _i107.AppointmentCubit(gh<_i101.LoadAppointmentsUseCase>()),
+    );
     return this;
   }
 }
 
 class _$LdvHttpClientModule extends _i755.LdvHttpClientModule {}
+
+class _$AppointmentDependencyInjectionModule
+    extends _i647.AppointmentDependencyInjectionModule {}
 
 class _$TaskDependencyInjectionModule
     extends _i598.TaskDependencyInjectionModule {}
