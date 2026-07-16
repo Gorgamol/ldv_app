@@ -112,12 +112,6 @@ abstract class AppLocalizations {
   /// **'Aufgaben'**
   String get tasks;
 
-  /// No description provided for @maintenance.
-  ///
-  /// In de, this message translates to:
-  /// **'Wartung'**
-  String get maintenance;
-
   /// No description provided for @weddings.
   ///
   /// In de, this message translates to:
@@ -147,6 +141,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.'**
   String get error;
+
+  /// No description provided for @maintenance.
+  ///
+  /// In de, this message translates to:
+  /// **'Wartung'**
+  String get maintenance;
+
+  /// No description provided for @maintenanceLoading.
+  ///
+  /// In de, this message translates to:
+  /// **'Wartungsbereiche werden geladen'**
+  String get maintenanceLoading;
 }
 
 class _AppLocalizationsDelegate

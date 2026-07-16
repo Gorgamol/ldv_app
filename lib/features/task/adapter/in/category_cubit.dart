@@ -22,7 +22,7 @@ class CategoryCubit extends Cubit<CategoryState> {
 
       emit(state.copyWith(status: .success, categories: categories));
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 
@@ -40,7 +40,7 @@ class CategoryCubit extends Cubit<CategoryState> {
 
       emit(state.copyWith(status: .success, categories: categories));
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 }

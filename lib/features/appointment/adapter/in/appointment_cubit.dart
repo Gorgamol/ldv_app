@@ -20,7 +20,7 @@ class AppointmentCubit extends Cubit<AppointmentState> {
 
       emit(state.copyWith(status: .success, appointments: appointments));
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 }

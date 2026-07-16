@@ -17,11 +17,11 @@ enum Branch {
   };
 
   String toL10nString() => switch (this) {
-    park => L10n.current.park,
-    mill => L10n.current.mill,
-    theater => L10n.current.theater,
+    park => L10n.translate.park,
+    mill => L10n.translate.mill,
+    theater => L10n.translate.theater,
     baking => 'Brotbackgruppe',
-    _ => L10n.current.unknown,
+    _ => L10n.translate.unknown,
   };
 
   String asAsset() => switch (this) {

@@ -24,10 +24,7 @@ class CreateTaskUseCase {
       );
     }
 
-    final newTask = await _taskRepository.createTask(
-      task: task,
-      branch: branch,
-    );
+    await _taskRepository.createTask(task: task, branch: branch);
 
     return (success: true, error: null);
   }

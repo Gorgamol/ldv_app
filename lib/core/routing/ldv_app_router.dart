@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ldv_app/features/appointment/domain/models/appointment.dart';
 import 'package:ldv_app/ui/appointment/appointment_details_page.dart';
 import 'package:ldv_app/ui/dashboard/dashboard_page.dart';
-import 'package:ldv_app/ui/maintenance/maintenance_page.dart';
+import 'package:ldv_app/ui/maintenance/overview/maintenance_overview_page.dart';
 import 'package:ldv_app/ui/splash/splash_page.dart';
 import 'package:ldv_app/ui/tasks/task_details_page.dart';
 import 'package:ldv_app/ui/tasks/task_overview_page.dart';
@@ -45,7 +45,7 @@ final ldvAppRouter = GoRouter(
     GoRoute(
       path: '/maintenance',
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: MaintenancePage());
+        return const NoTransitionPage(child: MaintenanceOverviewPage());
       },
     ),
     GoRoute(

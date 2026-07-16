@@ -2,10 +2,11 @@
     "appTitle": "LDV App",
     "unknown": "Unbekannt",
     "tasks": "Aufgaben",
-    "maintenance": "Wartung",
     "weddings": "Hochzeiten",
     "park": "Park",
     "mill": "Mühle",
     "theater": "Theater",
-    "error": "Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal."
+    "error": "Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.",
+    "maintenance": "Wartung",
+    "maintenanceLoading": "Wartungsbereiche werden geladen"
 }

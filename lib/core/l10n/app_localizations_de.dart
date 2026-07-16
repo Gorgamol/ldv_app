@@ -18,9 +18,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tasks => 'Aufgaben';
 
   @override
-  String get maintenance => 'Wartung';
-
-  @override
   String get weddings => 'Hochzeiten';
 
   @override
@@ -35,4 +32,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get error =>
       'Ein Fehler ist aufgetreten. Bitte versuche es später noch einmal.';
+
+  @override
+  String get maintenance => 'Wartung';
+
+  @override
+  String get maintenanceLoading => 'Wartungsbereiche werden geladen';
 }

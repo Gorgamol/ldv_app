@@ -28,7 +28,7 @@ class TaskCubit extends Cubit<TaskState> {
         state.copyWith(status: .success, tasks: tasks, filteredTasks: tasks),
       );
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 

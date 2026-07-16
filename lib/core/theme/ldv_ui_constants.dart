@@ -5,11 +5,12 @@ class LdvUiConstants {
   BoxDecoration boxDecorationRounded({
     bool withShadow = true,
     Color color = Colors.white,
+    double borderWidth = 1.5,
   }) {
     return BoxDecoration(
       color: color,
       borderRadius: roundedBorderRadius,
-      border: Border.all(width: 1.5),
+      border: Border.all(width: borderWidth),
       boxShadow: withShadow
           ? [
               BoxShadow(

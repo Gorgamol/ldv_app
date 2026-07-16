@@ -34,7 +34,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
       emit(state.copyWith(status: .success, task: task));
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 
@@ -55,7 +55,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
         ),
       );
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 
@@ -96,10 +96,10 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
           ),
         );
       } else {
-        emit(state.copyWith(status: .failure, error: L10n.current.error));
+        emit(state.copyWith(status: .failure, error: L10n.translate.error));
       }
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 
@@ -130,7 +130,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
         emit(state.copyWith(status: .failure, error: error));
       }
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 
@@ -194,7 +194,7 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
       emit(state.copyWith(status: .success, taskDeleted: true));
     } catch (exception) {
-      emit(state.copyWith(status: .failure, error: L10n.current.error));
+      emit(state.copyWith(status: .failure, error: L10n.translate.error));
     }
   }
 }

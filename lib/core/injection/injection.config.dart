@@ -22,6 +22,25 @@ import 'package:ldv_app/features/appointment/domain/interfaces/fetch_appointment
 import 'package:ldv_app/features/appointment/domain/use_cases/load_appointments_use_case.dart'
     as _i101;
 import 'package:ldv_app/features/branch/adapter/in/branch_cubit.dart' as _i999;
+import 'package:ldv_app/features/maintenance/adapter/in/maintenance_overview_cubit.dart'
+    as _i865;
+import 'package:ldv_app/features/maintenance/adapter/in/task_cubit.dart'
+    as _i1054;
+import 'package:ldv_app/features/maintenance/adapter/out/maintenance_http_adapter.dart'
+    as _i854;
+import 'package:ldv_app/features/maintenance/di.dart' as _i202;
+import 'package:ldv_app/features/maintenance/domain/interfaces/create_maintenance_item_port.dart'
+    as _i842;
+import 'package:ldv_app/features/maintenance/domain/interfaces/fetch_maintenance_items_port.dart'
+    as _i763;
+import 'package:ldv_app/features/maintenance/domain/interfaces/update_maintenance_item_port.dart'
+    as _i43;
+import 'package:ldv_app/features/maintenance/domain/use_cases/create_maintenance_item_use_case.dart'
+    as _i793;
+import 'package:ldv_app/features/maintenance/domain/use_cases/load_maintentance_items_use_case.dart'
+    as _i687;
+import 'package:ldv_app/features/maintenance/domain/use_cases/update_maintenance_item_use_case.dart'
+    as _i184;
 import 'package:ldv_app/features/task/adapter/in/category_cubit.dart' as _i1072;
 import 'package:ldv_app/features/task/adapter/in/task_cubit.dart' as _i1040;
 import 'package:ldv_app/features/task/adapter/in/task_details_cubit.dart'
@@ -62,6 +81,8 @@ extension GetItInjectableX on _i174.GetIt {
     final ldvHttpClientModule = _$LdvHttpClientModule();
     final appointmentDependencyInjectionModule =
         _$AppointmentDependencyInjectionModule();
+    final maintenanceDependencyInjectionModule =
+        _$MaintenanceDependencyInjectionModule();
     final taskDependencyInjectionModule = _$TaskDependencyInjectionModule();
     final categoryDependencyInjectionModule =
         _$CategoryDependencyInjectionModule();
@@ -71,6 +92,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i680.FetchAppointmentsPort>(
       () => appointmentDependencyInjectionModule.fetchAppointmentsPort,
+    );
+    gh.factory<_i763.FetchMaintenanceItemsPort>(
+      () => maintenanceDependencyInjectionModule.fetchMaintenanceItemsPort,
     );
     gh.factory<_i555.TaskRepository>(
       () => taskDependencyInjectionModule.taskRepository,
@@ -82,17 +106,40 @@ extension GetItInjectableX on _i174.GetIt {
       () => const _i837.FilterTasksUseCase(),
     );
     gh.lazySingleton<_i999.BranchCubit>(() => _i999.BranchCubit());
+    gh.factory<_i793.CreateMaintenanceItemUseCase>(
+      () => _i793.CreateMaintenanceItemUseCase(
+        gh<_i842.CreateMaintenanceItemPort>(),
+      ),
+    );
+    gh.factory<_i687.LoadMaintentanceItemsUseCase>(
+      () => _i687.LoadMaintentanceItemsUseCase(
+        gh<_i763.FetchMaintenanceItemsPort>(),
+      ),
+    );
     gh.factory<_i35.CreateCategoryUseCase>(
       () => _i35.CreateCategoryUseCase(gh<_i650.CategoryRepository>()),
     );
     gh.factory<_i1036.LoadCategoriesUseCase>(
       () => _i1036.LoadCategoriesUseCase(gh<_i650.CategoryRepository>()),
     );
+    gh.factory<_i854.MaintenanceHttpAdapter>(
+      () => _i854.MaintenanceHttpAdapter(gh<_i755.LdvHttpClient>()),
+    );
     gh.factory<_i895.CategoryHttpAdapter>(
       () => _i895.CategoryHttpAdapter(gh<_i755.LdvHttpClient>()),
     );
     gh.factory<_i915.TaskHttpAdapter>(
       () => _i915.TaskHttpAdapter(gh<_i755.LdvHttpClient>()),
+    );
+    gh.factory<_i865.MaintenanceOverviewCubit>(
+      () => _i865.MaintenanceOverviewCubit(
+        gh<_i687.LoadMaintentanceItemsUseCase>(),
+      ),
+    );
+    gh.factory<_i184.UpdateMaintenanceItemUseCase>(
+      () => _i184.UpdateMaintenanceItemUseCase(
+        gh<_i43.UpdateMaintenanceItemPort>(),
+      ),
     );
     gh.factory<_i101.LoadAppointmentsUseCase>(
       () => _i101.LoadAppointmentsUseCase(gh<_i680.FetchAppointmentsPort>()),
@@ -117,6 +164,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i214.UpdateTaskUseCase>(
       () => _i214.UpdateTaskUseCase(gh<_i555.TaskRepository>()),
+    );
+    gh.factory<_i1054.TaskCubit>(
+      () => _i1054.TaskCubit(
+        gh<_i279.LoadAllTasksUseCase>(),
+        gh<_i837.FilterTasksUseCase>(),
+      ),
     );
     gh.factory<_i1040.TaskCubit>(
       () => _i1040.TaskCubit(
@@ -143,6 +196,9 @@ class _$LdvHttpClientModule extends _i755.LdvHttpClientModule {}
 
 class _$AppointmentDependencyInjectionModule
     extends _i647.AppointmentDependencyInjectionModule {}
+
+class _$MaintenanceDependencyInjectionModule
+    extends _i202.MaintenanceDependencyInjectionModule {}
 
 class _$TaskDependencyInjectionModule
     extends _i598.TaskDependencyInjectionModule {}
